@@ -10,6 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Book } from "@mui/icons-material";
 import ThemeSwitch from "./ThemeSwitch";
+import ButtonLink from "@/components/ButtonLink";
 
 export default function AppBar({}) {
   return (
@@ -48,22 +49,24 @@ export default function AppBar({}) {
             </Button>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
-            <Button
+            <ButtonLink
+              href="/login"
               size="small"
               variant="outlined"
               color="inherit"
               sx={{ display: { xs: "none", md: "block" } }}
             >
               Login
-            </Button>
-            <Button
+            </ButtonLink>
+            <ButtonLink
+              href="/register"
               size="small"
               variant="outlined"
               color="inherit"
               sx={{ display: { xs: "none", md: "block" } }}
             >
               Register
-            </Button>
+            </ButtonLink>
             <ThemeSwitch />
             <IconButton
               size="large"
