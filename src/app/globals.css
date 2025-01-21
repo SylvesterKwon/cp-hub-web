@@ -5,6 +5,24 @@ body {
   padding: 0;
 }
 
+/*
+Hardcoded color for color flickering issue
+Add here if flickering issue occurs for MUI color palette
+*/
+:root {
+  body {
+    background-color: #fff;
+    color: #121212;
+  }
+}
+[data-theme="dark"] {
+  body {
+    background-color: #121212;
+    color: #fff;
+    --mui-palette-primary-main: #272727;
+  }
+}
+
 /* :root {
   --background: #ffffff;
   --foreground: #171717;

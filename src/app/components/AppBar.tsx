@@ -9,6 +9,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Book } from "@mui/icons-material";
+import ThemeSwitch from "./ThemeSwitch";
 
 export default function AppBar({}) {
   return (
@@ -63,6 +64,7 @@ export default function AppBar({}) {
             >
               Register
             </Button>
+            <ThemeSwitch />
             <IconButton
               size="large"
               edge="start"
