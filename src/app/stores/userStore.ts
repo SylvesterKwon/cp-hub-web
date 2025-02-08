@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { SignInForm, SignUpForm } from "../types/user";
-import cpHubClient from "@/clients/cpHubClient";
+import cpHubClient from "@/clients/cpHub/cpHubClient";
 import Cookies from "js-cookie";
 
 export type UserStore = {
@@ -14,7 +14,7 @@ export type UserStore = {
 };
 
 const getUserInfo = () => {
-  if (!Cookies.get("userId")) return;
+  if (!Cookies.get("accessToken")) return;
   return {
     id: Cookies.get("userId") as string,
     username: Cookies.get("username") as string,
@@ -27,6 +27,9 @@ export const useUserStore = create<UserStore>((set) => ({
     await cpHubClient.signIn(data);
     set({ userInfo: getUserInfo() });
   },
-  signUp: async (data: SignUpForm) => {},
+  signUp: async (data: SignUpForm) => {
+    await cpHubClient.signUp(data);
+    set({ userInfo: getUserInfo() });
+  },
   signOut: () => {},
 }));

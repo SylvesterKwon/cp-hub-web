@@ -11,13 +11,13 @@ export default async function AppBarUserInfo() {
     <>
       <SignInButton />
       <ButtonLink
-        href="/register"
+        href="/sign-up"
         size="small"
         variant="outlined"
         color="inherit"
         sx={{ display: { xs: "none", md: "block" } }}
       >
-        Register
+        Sign up
       </ButtonLink>
     </>
   );

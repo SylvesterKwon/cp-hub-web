@@ -15,9 +15,9 @@ import {
   useForm,
 } from "react-hook-form-mui";
 import { SignInForm } from "../types/user";
-import { InvalidPasswordError } from "../errors/user.error";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { useUserStore } from "../stores/userStore";
+import { CpHubError, CpHubErrorCode } from "@/clients/cpHub/CpHubError";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -34,11 +34,14 @@ export default function SignInPage() {
       const redirectPathname = searchParams.get("redirect") || "/";
       router.push(redirectPathname);
     } catch (e) {
-      if (e instanceof InvalidPasswordError) {
-        formContext.setError("password", {
-          type: "manual",
-          message: "Invalid password",
+      if (
+        e instanceof CpHubError &&
+        e.errorCode === CpHubErrorCode.UNAUTHORIZED
+      ) {
+        formContext.setError("email", {
+          message: "Invalid email or password",
         });
+        formContext.setError("password", {});
       }
     }
   }

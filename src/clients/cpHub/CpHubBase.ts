@@ -1,9 +1,5 @@
-import {
-  EmailAlreadyExistsError,
-  UnauthenticatedError,
-  UsernameAlreadyExistsError,
-} from "@/app/errors/user.error";
 import Cookies from "js-cookie";
+import { CpHubError } from "./CpHubError";
 
 export class CpHubBaseClient {
   private baseUrl = "http://localhost:3000"; // TODO: Move to env
@@ -30,15 +26,6 @@ export class CpHubBaseClient {
     return header;
   }
 
-  private handleError(resBody: { errorCode?: string }) {
-    if (resBody?.errorCode === "RECRIT:USER:UNAUTHENTICATED")
-      throw new UnauthenticatedError();
-    else if (resBody?.errorCode === "RECRIT:USER:USERNAME_ALREADY_EXISTS")
-      throw new UsernameAlreadyExistsError();
-    else if (resBody?.errorCode === "RECRIT:USER:EMAIL_ALREADY_EXISTS")
-      throw new EmailAlreadyExistsError();
-  }
-
   protected async get(url: string) {
     const res = await fetch(this.getFullUrl(url), {
       method: "GET",
@@ -46,7 +33,7 @@ export class CpHubBaseClient {
       headers: this.getHeader(),
     });
     const resBody = await res.json();
-    this.handleError(resBody);
+    if (!res.ok) throw new CpHubError(resBody);
     return resBody;
   }
 
@@ -58,7 +45,7 @@ export class CpHubBaseClient {
       headers: this.getHeader(),
     });
     const resBody = await res.json();
-    this.handleError(resBody);
+    if (!res.ok) throw new CpHubError(resBody);
     return resBody;
   }
 }

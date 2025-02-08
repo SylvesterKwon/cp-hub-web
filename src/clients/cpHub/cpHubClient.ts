@@ -1,4 +1,4 @@
-import { CpHubBaseClient } from "./cpHubBase";
+import { CpHubBaseClient } from "./CpHubBase";
 
 class CpHubClient extends CpHubBaseClient {
   async signIn(dto: {
@@ -7,6 +7,16 @@ class CpHubClient extends CpHubBaseClient {
     rememberMe?: boolean | undefined;
   }) {
     await this.post("/user/sign-in", dto);
+    return;
+  }
+
+  async signUp(dto: {
+    username: string;
+    email: string;
+    password: string;
+    passwordConfirmation: string;
+  }) {
+    await this.post("/user/sign-up", dto);
     return;
   }
 }
