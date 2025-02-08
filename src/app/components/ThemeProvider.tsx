@@ -14,12 +14,10 @@ import { useEffect, useState } from "react";
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const { resolvedTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState(lightTheme);
-  const paletteMode = resolvedTheme === "dark" ? "dark" : "light";
   useEffect(() => {
     if (resolvedTheme === "light") setCurrentTheme(lightTheme);
     else setCurrentTheme(darkTheme);
   }, [resolvedTheme]);
-  console.log("paletteMode", paletteMode);
 
   return (
     <MUIThemeProvider theme={currentTheme}>
