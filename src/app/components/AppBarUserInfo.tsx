@@ -1,9 +1,18 @@
+"use client";
 import ButtonLink from "@/components/ButtonLink";
-import { getUserInfo } from "../stores/userCookieStore";
 import SignInButton from "./SignInButton";
+import { useUserStore } from "../stores/userStore";
 
-export default async function AppBarUserInfo() {
-  const userInfo = await getUserInfo();
+type AppBarUserInfoProps = {
+  initialUserInfo?: {
+    id?: string;
+    username?: string;
+  };
+};
+export default function AppBarUserInfo(props: AppBarUserInfoProps) {
+  const clientUserInfo = useUserStore((state) => state.userInfo);
+  // Use client info if available else use server info
+  const userInfo = clientUserInfo || props.initialUserInfo;
 
   return userInfo ? (
     `Welcome ${userInfo.username}`

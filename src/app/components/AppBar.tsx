@@ -10,7 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
 import { Book } from "@mui/icons-material";
 import ThemeSwitch from "./ThemeSwitch";
-import AppBarUserInfo from "./AppBarUserInfo";
+import AppBarUserInfoWrapper from "./AppBarUserInfoWrapper";
 
 export default function AppBar({}) {
   return (
@@ -49,7 +49,7 @@ export default function AppBar({}) {
             </Button>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
-            <AppBarUserInfo />
+            <AppBarUserInfoWrapper />
             <ThemeSwitch />
             <IconButton
               size="large"

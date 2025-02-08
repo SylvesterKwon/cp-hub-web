@@ -24,12 +24,16 @@ const getUserInfo = () => {
 export const useUserStore = create<UserStore>((set) => ({
   userInfo: getUserInfo(),
   signIn: async (data: SignInForm) => {
-    await cpHubClient.signIn(data);
-    set({ userInfo: getUserInfo() });
+    const res = await cpHubClient.signIn(data);
+    set({
+      userInfo: {
+        id: res.userId,
+        username: res.username,
+      },
+    });
   },
   signUp: async (data: SignUpForm) => {
     await cpHubClient.signUp(data);
-    set({ userInfo: getUserInfo() });
   },
   signOut: () => {},
 }));
