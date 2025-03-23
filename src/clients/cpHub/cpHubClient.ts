@@ -24,6 +24,27 @@ class CpHubClient extends CpHubBaseClient {
     await this.post("/user/sign-up", dto);
     return;
   }
+
+  async getProblemList(dto: {
+    page: number;
+    pageSize: number;
+    keyword?: string;
+    contestTypes?: string[];
+  }) {
+    const res = await this.get("/problem", dto);
+    return res as {
+      results: {
+        id: string;
+        name: string;
+        containingContests: {
+          id: string;
+          name: string;
+          type: string;
+        }[];
+      }[];
+      totalCount: number;
+    };
+  }
 }
 
 const cpHubClient = new CpHubClient();

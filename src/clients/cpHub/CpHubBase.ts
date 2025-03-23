@@ -1,11 +1,21 @@
 import Cookies from "js-cookie";
 import { CpHubError } from "./CpHubError";
 
+export type Query = Record<string, string | number | string[] | number[]>;
+
 export class CpHubBaseClient {
   private baseUrl = "http://localhost:3000"; // TODO: Move to env
 
-  private getFullUrl(path: string) {
-    return `${this.baseUrl}${path}`;
+  private getFullUrl(path: string, query?: Query) {
+    let res = `${this.baseUrl}${path}`;
+    if (query) {
+      const qs = Object.entries(query)
+        .filter(([, value]) => value !== undefined)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&");
+      res += `?${qs}`;
+    }
+    return res;
   }
 
   private getAccessToken() {
@@ -26,8 +36,8 @@ export class CpHubBaseClient {
     return header;
   }
 
-  protected async get(url: string) {
-    const res = await fetch(this.getFullUrl(url), {
+  protected async get(url: string, query?: Query) {
+    const res = await fetch(this.getFullUrl(url, query), {
       method: "GET",
       credentials: "include",
       headers: this.getHeader(),
