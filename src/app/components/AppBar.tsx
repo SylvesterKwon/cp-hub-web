@@ -1,6 +1,5 @@
 import {
   AppBar as MUIAppBar,
-  Button,
   IconButton,
   Stack,
   Toolbar,
@@ -11,6 +10,7 @@ import Link from "next/link";
 import { Book } from "@mui/icons-material";
 import ThemeSwitch from "./ThemeSwitch";
 import AppBarUserInfoWrapper from "./AppBarUserInfoWrapper";
+import ButtonLink from "@/components/ButtonLink";
 
 export default function AppBar({}) {
   return (
@@ -35,18 +35,27 @@ export default function AppBar({}) {
                 CP hub
               </Typography>
             </Link>
-            <Button
+            <ButtonLink
               color="inherit"
               sx={{ display: { xs: "none", md: "block" } }}
+              href="/problems"
             >
               Problems
-            </Button>
-            <Button
+            </ButtonLink>
+            <ButtonLink
               color="inherit"
               sx={{ display: { xs: "none", md: "block" } }}
+              href="/contests"
+            >
+              Contests
+            </ButtonLink>
+            <ButtonLink
+              color="inherit"
+              sx={{ display: { xs: "none", md: "block" } }}
+              href="/forum"
             >
               Forum
-            </Button>
+            </ButtonLink>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <AppBarUserInfoWrapper />
