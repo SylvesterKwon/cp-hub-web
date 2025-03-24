@@ -9,6 +9,7 @@ import {
   TextFieldElement,
 } from "react-hook-form-mui";
 import { useProblemListStore } from "./stores/problemListStore";
+import { ContestType } from "@/clients/cpHub/type";
 
 export type ProblemFilterForm = {
   search: string;
@@ -50,7 +51,12 @@ export default function ProblemFilter() {
               fullWidth
             />
             <CheckboxButtonGroup
-              options={["Codeforces", "AtCoder", "ICPC", "IOI"]}
+              options={[
+                { label: "Codeforces", id: ContestType.CF },
+                { label: "AtCoder", id: ContestType.ATCODER },
+                { label: "ICPC", id: ContestType.ICPC },
+                { label: "IOI", id: ContestType.IOI },
+              ]}
               name="contestTypes"
               label="Contest Types"
             />
