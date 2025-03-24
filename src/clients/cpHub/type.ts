@@ -50,3 +50,18 @@ export type GetContestDetailResponse = {
     name: string;
   }[];
 };
+
+export type GetProblemDetailResponse = {
+  id: string;
+  name: string;
+  tags: string[]; // TODO: make it fancy
+  containingContests: {
+    id: string;
+    name: string;
+    type: ContestType;
+    detailedType?: DetailedContestType;
+  }[];
+  availableOnlineJudges: {
+    url: string;
+  }[];
+};

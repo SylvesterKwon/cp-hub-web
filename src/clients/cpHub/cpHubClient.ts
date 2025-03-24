@@ -1,5 +1,5 @@
 import { CpHubBaseClient } from "./CpHubBase";
-import { GetContestDetailResponse } from "./type";
+import { GetContestDetailResponse, GetProblemDetailResponse } from "./type";
 
 class CpHubClient extends CpHubBaseClient {
   async signIn(dto: {
@@ -50,6 +50,11 @@ class CpHubClient extends CpHubBaseClient {
   async getContestDetail(contestId: string) {
     const res = await this.get(`/contest/${contestId}`);
     return res as GetContestDetailResponse;
+  }
+
+  async getProblemDetail(problemId: string) {
+    const res = await this.get(`/problem/${problemId}`);
+    return res as GetProblemDetailResponse;
   }
 }
 
