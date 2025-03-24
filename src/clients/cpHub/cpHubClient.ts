@@ -1,4 +1,5 @@
 import { CpHubBaseClient } from "./CpHubBase";
+import { GetContestDetailResponse } from "./type";
 
 class CpHubClient extends CpHubBaseClient {
   async signIn(dto: {
@@ -44,6 +45,11 @@ class CpHubClient extends CpHubBaseClient {
       }[];
       totalCount: number;
     };
+  }
+
+  async getContestDetail(contestId: string) {
+    const res = await this.get(`/contest/${contestId}`);
+    return res as GetContestDetailResponse;
   }
 }
 
