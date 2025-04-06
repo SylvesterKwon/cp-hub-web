@@ -15,12 +15,13 @@ import Grid from "@mui/material/Grid2";
 import Link from "next/link";
 import { ReactNode } from "react";
 import ProblemRating from "./ProblemRating";
-import ProblemSoution from "./ProblemSoution";
+import ProblemSoutionList from "./ProblemEditorialList";
+import EditorialListStoreProvider from "./EditorialListStoreProvider";
 
 export default async function ProblemDetailPage(props: {
   params: { id: string };
 }) {
-  const { params } = props;
+  const params = await props.params;
   const problemId = params.id;
   const problem = await cpHubClient.getProblemDetail(problemId); // TODO: contest 없을때 처리 추가
   const problemInfo: { label: string; value: ReactNode }[] = [
@@ -80,7 +81,9 @@ export default async function ProblemDetailPage(props: {
           </Card>
         </Grid>
         <Grid size={8}>
-          <ProblemSoution />
+          <EditorialListStoreProvider problemId={problemId}>
+            <ProblemSoutionList />
+          </EditorialListStoreProvider>
         </Grid>
         <Grid size={4}>
           <ProblemRating />

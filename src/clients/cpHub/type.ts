@@ -35,6 +35,45 @@ export enum DetailedContestType {
   // ...
 }
 
+export type SignInRequestDto = {
+  email: string;
+  password: string;
+  rememberMe?: boolean | undefined;
+};
+
+export type SignInResponse = {
+  accessToken: string;
+  userId: string;
+  username: string;
+};
+
+export type SignUpRequestDto = {
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+};
+
+export type GetProblemListQuery = {
+  page: number;
+  pageSize: number;
+  keyword?: string;
+  contestTypes?: string[];
+};
+
+export type GetProblemListResponse = {
+  results: {
+    id: string;
+    name: string;
+    containingContests: {
+      id: string;
+      name: string;
+      type: string;
+    }[];
+  }[];
+  totalCount: number;
+};
+
 export type GetContestDetailResponse = {
   id: string;
   name: string;
@@ -64,4 +103,25 @@ export type GetProblemDetailResponse = {
   availableOnlineJudges: {
     url: string;
   }[];
+};
+
+export type EditorialDetail = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  content: string;
+  author: {
+    username: string;
+  };
+};
+
+export type GetProblemEditorialListQuery = {
+  page?: number;
+  pageSize?: number;
+  // TODO: add sortBy
+};
+
+export type GetProblemEditorialListResponse = {
+  results: EditorialDetail[];
+  totalCount: number;
 };
