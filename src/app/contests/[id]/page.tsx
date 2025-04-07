@@ -116,7 +116,6 @@ export default async function ContestsDetailPage(props: {
             <CardHeader title="Contest information" />
             <CardContent>
               <Typography variant="body1" component="p">
-                {/* WIP - 임시로 넣어둔 정보, 스타일링 다시하기 */}
                 <Table size="small">
                   <TableBody>
                     {contestInfo.map((contestInfoRow) => (

@@ -50,7 +50,6 @@ export default function ProblemTable() {
       page: paginationState.pageIndex + 1,
       pageSize: paginationState.pageSize,
     });
-    console.log("paginationState", paginationState);
   }, [paginationState, setPagination]);
 
   const table = useMaterialReactTable<ProblemEntry>({
