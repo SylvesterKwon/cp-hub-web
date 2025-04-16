@@ -1,6 +1,6 @@
 import { createStore } from "zustand";
 import cpHubClient from "@/clients/cpHub/cpHubClient";
-import { EditorialDetail } from "@/clients/cpHub/type";
+import { EditorialDetail, EditorialVoteAction } from "@/clients/cpHub/type";
 import { createContext, useContext } from "react";
 import { useStore } from "zustand";
 
@@ -24,6 +24,7 @@ export type ProblemEditorialListState = {
   editorialList: EditorialDetail[];
   filter: ProblemEditorialFilter;
   setFilter: (filter: ProblemEditorialFilter) => Promise<void>;
+  vote: (editorialId: string, action: EditorialVoteAction) => Promise<void>;
 };
 
 export type ProblemEditorialStore = ReturnType<
@@ -47,6 +48,22 @@ export const createProblemEditorialStore = (problemId: string) => {
         editorialList: res.results,
         totalCount: res.totalCount,
       });
+    },
+    vote: async (editorialId: string, action: EditorialVoteAction) => {
+      const res = await cpHubClient.editorialVote(editorialId, { action });
+      const editorialList = get().editorialList.map((editorial) => {
+        if (editorial.id === editorialId) {
+          return {
+            ...editorial,
+            upvoteCount: res.data.upvoteCount,
+            downvoteCount: res.data.downvoteCount,
+            myVote: res.data.myVote,
+          };
+        }
+        // TODO: add complete snackbar
+        return editorial;
+      });
+      set({ editorialList });
     },
   }));
 };

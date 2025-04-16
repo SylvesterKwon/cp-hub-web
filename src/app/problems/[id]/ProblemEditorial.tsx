@@ -6,19 +6,19 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { EditorialDetail } from "@/clients/cpHub/type";
+import { EditorialDetail, EditorialVoteAction } from "@/clients/cpHub/type";
 import {
   ArrowDownward,
   ArrowUpward,
-  Comment,
   CommentOutlined,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
 
 export default function ProblemEditorial(props: {
   editorial: EditorialDetail;
+  onVote: (editorialId: string, action: EditorialVoteAction) => void;
 }) {
-  const { editorial } = props;
+  const { editorial, onVote } = props;
 
   return (
     <Card color="secondary" variant="outlined">
@@ -38,8 +38,42 @@ export default function ProblemEditorial(props: {
             sx={{ "--mui-shape-borderRadius": "16px" }}
           >
             <ButtonGroup size="small" color="info">
-              <Button startIcon={<ArrowUpward />}>32</Button>
-              <Button startIcon={<ArrowDownward />}>12</Button>
+              {editorial.myVote === "upvote" ? (
+                <Button
+                  variant="contained"
+                  color="blue"
+                  startIcon={<ArrowUpward />}
+                  onClick={() => onVote(editorial.id, "undo")}
+                >
+                  {editorial.upvoteCount}
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  startIcon={<ArrowUpward />}
+                  onClick={() => onVote(editorial.id, "upvote")}
+                >
+                  {editorial.upvoteCount}
+                </Button>
+              )}
+              {editorial.myVote === "downvote" ? (
+                <Button
+                  variant="contained"
+                  color="red"
+                  startIcon={<ArrowDownward />}
+                  onClick={() => onVote(editorial.id, "undo")}
+                >
+                  {editorial.downvoteCount}
+                </Button>
+              ) : (
+                <Button
+                  variant="outlined"
+                  startIcon={<ArrowDownward />}
+                  onClick={() => onVote(editorial.id, "downvote")}
+                >
+                  {editorial.downvoteCount}
+                </Button>
+              )}
             </ButtonGroup>
             <Button
               variant="text"
