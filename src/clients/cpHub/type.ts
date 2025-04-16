@@ -113,6 +113,9 @@ export type EditorialDetail = {
   author: {
     username: string;
   };
+  upvoteCount: number;
+  downvoteCount: number;
+  myVote?: EditorialVoteType;
 };
 
 export type GetProblemEditorialListQuery = {
@@ -124,4 +127,21 @@ export type GetProblemEditorialListQuery = {
 export type GetProblemEditorialListResponse = {
   results: EditorialDetail[];
   totalCount: number;
+};
+
+export type EditorialVoteType = "upvote" | "downvote" | null;
+export type EditorialVoteAction = "upvote" | "downvote" | "undo";
+
+export type EditorialVoteRequestDto = {
+  action: EditorialVoteAction;
+};
+
+export type EditorialVoteResponse = {
+  message: string;
+  data: {
+    editorialId: string;
+    upvoteCount: number;
+    downvoteCount: number;
+    myVote: EditorialVoteType;
+  };
 };

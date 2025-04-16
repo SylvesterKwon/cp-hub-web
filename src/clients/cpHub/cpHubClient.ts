@@ -1,6 +1,8 @@
 import { CpHubBaseClient } from "./CpHubBase";
 import {
   EditorialDetail,
+  EditorialVoteRequestDto,
+  EditorialVoteResponse,
   GetContestDetailResponse,
   GetProblemDetailResponse,
   GetProblemEditorialListQuery,
@@ -50,6 +52,13 @@ class CpHubClient extends CpHubBaseClient {
   ) {
     const res = await this.get(`/problem/${problemId}/editorial`, dto);
     return res as GetProblemEditorialListResponse;
+  }
+
+  async editorialVote(editorialId: string, dto: EditorialVoteRequestDto) {
+    const res = await this.post(`/editorial/${editorialId}/vote`, {
+      action: dto.action,
+    });
+    return res as EditorialVoteResponse;
   }
 }
 

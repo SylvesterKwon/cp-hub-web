@@ -10,6 +10,7 @@ export default function ProblemEditorialList() {
   );
   // const filter = useProblemEditorialStore((state) => state.filter);
   const setFilter = useProblemEditorialStore((state) => state.setFilter);
+  const vote = useProblemEditorialStore((state) => state.vote);
   useEffect(() => {
     setFilter({
       page: 1,
@@ -26,7 +27,11 @@ export default function ProblemEditorialList() {
         {/* TODO: Add comment */}
         <Stack spacing={2}>
           {editorialList.map((editorial) => (
-            <ProblemEditorial key={editorial.id} editorial={editorial} />
+            <ProblemEditorial
+              key={editorial.id}
+              editorial={editorial}
+              onVote={vote}
+            />
           ))}
         </Stack>
         {/* TODO: Add pagination (or inifnite scroll) */}
