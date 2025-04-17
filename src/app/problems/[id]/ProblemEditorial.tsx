@@ -13,6 +13,7 @@ import {
   CommentOutlined,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
+import MarkdownText from "@/components/MarkdownText";
 
 export default function ProblemEditorial(props: {
   editorial: EditorialDetail;
@@ -24,7 +25,7 @@ export default function ProblemEditorial(props: {
     <Card color="secondary" variant="outlined">
       <Stack direction="column" spacing={2} padding={2}>
         <UserCard username={editorial.author.username} />
-        <div>{editorial.content}</div>
+        <MarkdownText content={editorial.content} />
         <Stack
           direction="row"
           justifyContent="space-between"
