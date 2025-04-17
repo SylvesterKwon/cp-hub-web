@@ -9,7 +9,7 @@ import { useStore } from "zustand";
 export type ProblemEditorialFilter = {
   page: number;
   pageSize: number;
-  // sortBy?: string;
+  sortBy?: "recommended" | "trending" | "createdAtAsc" | "updatedAtDesc";
 };
 
 const initialFilter: ProblemEditorialFilter = {
