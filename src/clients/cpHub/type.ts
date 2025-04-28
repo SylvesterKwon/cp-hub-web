@@ -118,10 +118,16 @@ export type EditorialDetail = {
   myVote?: EditorialVoteType;
 };
 
+export type EditorialListSortBy =
+  | "recommended"
+  | "trending"
+  | "createdAtAsc"
+  | "updatedAtDesc";
+
 export type GetProblemEditorialListQuery = {
   page?: number;
   pageSize?: number;
-  // TODO: add sortBy
+  sortBy?: EditorialListSortBy;
 };
 
 export type GetProblemEditorialListResponse = {
