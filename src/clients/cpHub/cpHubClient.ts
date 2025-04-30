@@ -1,9 +1,17 @@
 import { CpHubBaseClient } from "./CpHubBase";
 import {
+  AddCommentRequestDto,
+  AddCommentResponse,
+  CommentContextType,
+  DeleteCommentResponse,
+  EditCommentRequestDto,
+  EditCommentResponse,
   EditorialDetail,
   EditorialVoteRequestDto,
   EditorialVoteResponse,
+  GetCommentResponse,
   GetContestDetailResponse,
+  GetMeResponse,
   GetProblemDetailResponse,
   GetProblemEditorialListQuery,
   GetProblemEditorialListResponse,
@@ -24,6 +32,11 @@ class CpHubClient extends CpHubBaseClient {
   async signUp(dto: SignUpRequestDto) {
     await this.post("/user/sign-up", dto);
     return;
+  }
+
+  async getMe() {
+    const res = await this.get("/user/me");
+    return res as GetMeResponse;
   }
 
   async getProblemList(dto: GetProblemListQuery) {
@@ -59,6 +72,32 @@ class CpHubClient extends CpHubBaseClient {
       action: dto.action,
     });
     return res as EditorialVoteResponse;
+  }
+
+  // COMMENT API
+  async getComment(
+    commentContextType: CommentContextType,
+    commentContextId: string
+  ) {
+    const res = await this.get(
+      `/comment/${commentContextType}/${commentContextId}`
+    );
+    return res as GetCommentResponse;
+  }
+
+  async addComment(dto: AddCommentRequestDto) {
+    const res = await this.post(`/comment/add`, dto);
+    return res as AddCommentResponse;
+  }
+
+  async editComment(commentId: string, dto: EditCommentRequestDto) {
+    const res = await this.post(`/comment/${commentId}/edit`, dto);
+    return res as EditCommentResponse;
+  }
+
+  async deleteComment(commentId: string) {
+    const res = await this.post(`/comment/${commentId}/delete`);
+    return res as DeleteCommentResponse;
   }
 }
 

@@ -54,6 +54,25 @@ export type SignUpRequestDto = {
   passwordConfirmation: string;
 };
 
+export type GetMeResponse =
+  | {
+      id: string;
+      username: string;
+      email: string;
+      profilePictureUrl?: string;
+      createdAt: string;
+      updatedAt: string;
+      role?: {
+        id: string;
+        name: string;
+        permissions: {
+          id: string;
+          name: string;
+        }[];
+      };
+    }
+  | undefined;
+
 export type GetProblemListQuery = {
   page: number;
   pageSize: number;
@@ -112,6 +131,7 @@ export type EditorialDetail = {
   content: string;
   author: {
     username: string;
+    profilePictureUrl: string;
   };
   upvoteCount: number;
   downvoteCount: number;
@@ -151,3 +171,49 @@ export type EditorialVoteResponse = {
     myVote: EditorialVoteType;
   };
 };
+
+// COMMENT API
+export enum CommentContextType {
+  PROBLEM = "problem",
+  EDITORIAL = "editorial",
+  CONTEST = "contest",
+}
+
+export type CommentContext = {
+  type: CommentContextType;
+  id: string;
+};
+
+export type Comment = {
+  id: string;
+  isDeleted: boolean;
+  content?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  author?: {
+    id: string;
+    username: string;
+    profilePictureUrl?: string;
+  };
+  childComments: Comment[];
+};
+
+export type GetCommentResponse = { results: Comment[] };
+
+export type AddCommentRequestDto = {
+  context: CommentContext;
+  content: string;
+  parentCommentId?: string;
+};
+
+export type EditCommentRequestDto = {
+  content: string;
+};
+
+export type AddCommentResponse = { message: string; commentId: string };
+export type EditCommentResponse = { message: string; commentId: string };
+export type DeleteCommentResponse = { message: string; commentId: string };
+
+export enum RoleType {
+  ADMIN = "ADMIN",
+}
