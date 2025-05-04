@@ -5,6 +5,11 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   IconButton,
   Stack,
@@ -41,8 +46,9 @@ function EditorialComment(props: { comment: Comment }) {
   const [interactionStatus, setInteractionStatus] = useState<"View" | "Edit">(
     "View"
   );
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
 
-  // const deleteComment = useCommentStore((state) => state.deleteComment);
+  const deleteComment = useCommentStore((state) => state.deleteComment);
 
   if (comment.isDeleted)
     return (
@@ -104,7 +110,13 @@ function EditorialComment(props: { comment: Comment }) {
             )}
             {(userInfo?.id === comment.author?.id ||
               userInfo?.role?.name === RoleType.ADMIN) && (
-              <IconButton aria-label="delete" size="small">
+              <IconButton
+                aria-label="delete"
+                size="small"
+                onClick={() => {
+                  setDeleteConfirmationOpen(true);
+                }}
+              >
                 <Delete fontSize="inherit" />
               </IconButton>
             )}
@@ -138,6 +150,13 @@ function EditorialComment(props: { comment: Comment }) {
           </Box>
         )}
       </Stack>
+      <EditorialCommentDeleteConfirmationModal
+        open={deleteConfirmationOpen}
+        setOpen={setDeleteConfirmationOpen}
+        onOk={() => {
+          deleteComment(comment.id);
+        }}
+      />
     </Stack>
   );
 }
@@ -190,5 +209,40 @@ function EditorialCommentEdit(props: {
         </Stack>
       </Stack>
     </FormContainer>
+  );
+}
+
+function EditorialCommentDeleteConfirmationModal(props: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onOk: () => void;
+}) {
+  const { open, setOpen, onOk } = props;
+  return (
+    <Dialog open={open}>
+      <DialogTitle>Deleting comment</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Are you sure?</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={() => {
+            setOpen(false);
+            onOk();
+          }}
+          autoFocus
+          color="warning"
+        >
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
