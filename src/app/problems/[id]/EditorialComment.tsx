@@ -27,6 +27,7 @@ import { FormContainer, TextFieldElement, useForm } from "react-hook-form-mui";
 import { EditCommentForm } from "./types/comment";
 import { Delete, Edit, Reply } from "@mui/icons-material";
 import { useUserStore } from "@/app/stores/userStore";
+import EditorialCommentAddForm from "./EditorialCommentAddForm";
 
 export default function EditorialCommentList(props: { comments: Comment[] }) {
   const { comments } = props;
@@ -46,6 +47,7 @@ function EditorialComment(props: { comment: Comment }) {
   const [interactionStatus, setInteractionStatus] = useState<"View" | "Edit">(
     "View"
   );
+  const [replyFormOpen, setReplyFormOpen] = useState(false);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
 
   const deleteComment = useCommentStore((state) => state.deleteComment);
@@ -121,28 +123,38 @@ function EditorialComment(props: { comment: Comment }) {
               </IconButton>
             )}
             {userInfo && (
-              <IconButton aria-label="reply" size="small">
+              <IconButton
+                aria-label="reply"
+                size="small"
+                onClick={() => {
+                  setReplyFormOpen(!replyFormOpen);
+                }}
+              >
                 <Reply fontSize="inherit" />
               </IconButton>
             )}
           </ButtonGroup>
         </Stack>
 
-        <Box sx={{ marginBottom: "16px" }}>
-          <div className={styles["comment-markdown-text"]}>
-            {interactionStatus === "Edit" ? (
-              <EditorialCommentEdit
-                comment={comment}
-                setInteractionStatus={setInteractionStatus}
-              />
-            ) : (
-              <MarkdownText
-                content={comment.content!}
-                // disallowedElements={["h1", "h2", "h3", "h4", "h5", "h6"]}
-              />
-            )}
-          </div>
-        </Box>
+        <div className={styles["comment-markdown-text"]}>
+          {interactionStatus === "Edit" ? (
+            <EditorialCommentEdit
+              comment={comment}
+              setInteractionStatus={setInteractionStatus}
+            />
+          ) : (
+            <MarkdownText
+              content={comment.content!}
+              // disallowedElements={["h1", "h2", "h3", "h4", "h5", "h6"]}
+            />
+          )}
+        </div>
+
+        {replyFormOpen && (
+          <Box sx={{ marginBottom: "16px" }}>
+            <EditorialCommentAddForm parentCommentId={comment.id} />
+          </Box>
+        )}
 
         {comment.childComments.length > 0 && (
           <Box sx={{ marginLeft: -2 }}>
