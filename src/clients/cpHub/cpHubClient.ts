@@ -2,6 +2,7 @@ import { CpHubBaseClient } from "./CpHubBase";
 import {
   AddCommentRequestDto,
   AddCommentResponse,
+  CommentContext,
   CommentContextType,
   DeleteCommentResponse,
   EditCommentRequestDto,
@@ -75,12 +76,9 @@ class CpHubClient extends CpHubBaseClient {
   }
 
   // COMMENT API
-  async getComment(
-    commentContextType: CommentContextType,
-    commentContextId: string
-  ) {
+  async getComment(commentContext: CommentContext) {
     const res = await this.get(
-      `/comment/${commentContextType}/${commentContextId}`
+      `/comment/${commentContext.type}/${commentContext.id}`
     );
     return res as GetCommentResponse;
   }
