@@ -52,13 +52,9 @@ function EditorialComment(props: { comment: Comment }) {
 
   const deleteComment = useCommentStore((state) => state.deleteComment);
 
-  if (comment.isDeleted)
-    return (
-      <Alert severity="warning" variant="outlined">
-        Deleted comment
-        {/* TODO: 삭제 댓글 대댓글은 표현하도록 수정 */}
-      </Alert>
-    );
+  if (comment.isDeleted) {
+    return <DeletedEditorialComment comment={comment} />;
+  }
   return (
     <Stack direction="row" spacing={1} sx={{ minWidth: "300px" }}>
       <Stack direction="column" alignItems="center" spacing={1}>
@@ -67,10 +63,12 @@ function EditorialComment(props: { comment: Comment }) {
           alt={comment.author?.username}
           src={comment.author?.profilePictureUrl}
         />
-        <Divider orientation="vertical" sx={{ height: "100%" }} />
+        {comment.childComments.length > 0 && (
+          <Divider orientation="vertical" sx={{ flex: 1 }} />
+        )}
       </Stack>
 
-      <Stack direction="column">
+      <Stack direction="column" sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" spacing={1} alignItems="center">
             <Typography sx={{ fontWeight: "medium" }}>
@@ -150,14 +148,19 @@ function EditorialComment(props: { comment: Comment }) {
           )}
         </div>
 
-        {replyFormOpen && (
-          <Box sx={{ marginBottom: "16px" }}>
-            <EditorialCommentAddForm parentCommentId={comment.id} />
-          </Box>
-        )}
+        <EditorialCommentAddForm
+          open={replyFormOpen}
+          parentCommentId={comment.id}
+          sx={{ marginBottom: "16px" }}
+        />
 
         {comment.childComments.length > 0 && (
-          <Box sx={{ marginLeft: -2 }}>
+          <Box
+            sx={{
+              transform: "translateX(-16px)",
+              width: "calc(100% + 16px)",
+            }}
+          >
             <EditorialCommentList comments={comment.childComments} />
           </Box>
         )}
@@ -169,6 +172,37 @@ function EditorialComment(props: { comment: Comment }) {
           deleteComment(comment.id);
         }}
       />
+    </Stack>
+  );
+}
+
+function DeletedEditorialComment(props: { comment: Comment }) {
+  const { comment } = props;
+  return (
+    <Stack direction="column" spacing={1} sx={{ minWidth: "300px" }}>
+      <Alert severity="warning" variant="outlined">
+        Deleted comment
+      </Alert>
+      <Stack direction="row" spacing={1}>
+        <Stack direction="column" alignItems="center">
+          <Box sx={{ width: 36 }} />
+          {comment.childComments.length > 0 && (
+            <Divider orientation="vertical" sx={{ flex: 1 }} />
+          )}
+        </Stack>
+        <Stack direction="column" sx={{ width: "100%" }}>
+          {comment.childComments.length > 0 && (
+            <Box
+              sx={{
+                transform: "translateX(-16px)",
+                width: "calc(100% + 16px)",
+              }}
+            >
+              <EditorialCommentList comments={comment.childComments} />
+            </Box>
+          )}
+        </Stack>
+      </Stack>
     </Stack>
   );
 }

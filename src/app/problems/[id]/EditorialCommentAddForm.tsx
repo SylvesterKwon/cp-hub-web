@@ -1,5 +1,5 @@
 "use client";
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, SxProps, Theme } from "@mui/material";
 import {
   FormContainer,
   TextFieldElement,
@@ -13,9 +13,11 @@ import { setFormError } from "@/utils/setFormError";
 import { useEffect } from "react";
 
 export default function EditorialCommentAddForm(props: {
+  open: boolean;
   parentCommentId?: string;
+  sx?: SxProps<Theme>;
 }) {
-  const { parentCommentId } = props;
+  const { open, parentCommentId, sx } = props;
   const formContext = useForm<AddCommentForm>();
 
   useEffect(() => {
@@ -38,12 +40,13 @@ export default function EditorialCommentAddForm(props: {
         setFormError(formContext, e);
     }
   }
+  if (!open) return <></>;
   return (
     <FormContainer<AddCommentForm>
       formContext={formContext}
       onSuccess={handleSubmit}
     >
-      <Stack direction="column" spacing={1}>
+      <Stack direction="column" spacing={1} sx={sx}>
         <TextFieldElement
           name="content"
           fullWidth

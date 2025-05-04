@@ -20,7 +20,7 @@ export default function EditorialCommentSection() {
       sx={{ padding: 1, overflow: "scroll" }}
     >
       <Stack direction="column" spacing={2}>
-        <EditorialCommentAddForm />
+        <EditorialCommentAddForm open={true} />
         <EditorialCommentList comments={comments} />
       </Stack>
     </Card>
