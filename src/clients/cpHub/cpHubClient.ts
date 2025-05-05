@@ -3,7 +3,6 @@ import {
   AddCommentRequestDto,
   AddCommentResponse,
   CommentContext,
-  CommentContextType,
   DeleteCommentResponse,
   EditCommentRequestDto,
   EditCommentResponse,

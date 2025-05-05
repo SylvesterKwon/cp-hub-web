@@ -1,8 +1,10 @@
 "use client";
 import {
+  Alert,
   Card,
   CardContent,
   CardHeader,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -10,7 +12,8 @@ import { useProblemEditorialStore } from "./stores/problemEditorialStore";
 import { useEffect } from "react";
 import ProblemEditorial from "./ProblemEditorial";
 import { FormContainer, SelectElement, useForm } from "react-hook-form-mui";
-import { EditorialListSortBy } from "@/clients/cpHub/type";
+import { CommentContextType, EditorialListSortBy } from "@/clients/cpHub/type";
+import CommentStoreProvider from "@/app/components/providers/CommentStoreProvider";
 
 type ProblemEditorialListFilterForm = {
   sortBy: EditorialListSortBy;
@@ -23,6 +26,7 @@ export default function ProblemEditorialList() {
   const editorialList = useProblemEditorialStore(
     (state) => state.editorialList
   );
+  const editorialLoading = useProblemEditorialStore((state) => state.isLoading);
   const setFilter = useProblemEditorialStore((state) => state.setFilter);
   const filter = useProblemEditorialStore((state) => state.filter);
   useEffect(() => {
@@ -54,7 +58,6 @@ export default function ProblemEditorialList() {
                 <SelectElement
                   name="sortBy"
                   size="small"
-                  // variant="standard"
                   options={[
                     {
                       id: "recommended",
@@ -90,14 +93,35 @@ export default function ProblemEditorialList() {
       />
       <CardContent>
         {/* TODO: Add my editorial */}
-        {/* TODO: Add case for no editorial */}
-        {/* TODO: Add comment */}
-        <Stack spacing={2}>
-          {editorialList.map((editorial) => (
-            <ProblemEditorial key={editorial.id} editorial={editorial} />
-          ))}
-        </Stack>
         {/* TODO: Add pagination (or inifnite scroll) */}
+        {editorialLoading === false ? (
+          editorialList.length ? (
+            <Stack spacing={2}>
+              {editorialList.map((editorial) => (
+                <CommentStoreProvider
+                  key={editorial.id}
+                  context={{
+                    type: CommentContextType.EDITORIAL,
+                    id: editorial.id,
+                  }}
+                >
+                  <ProblemEditorial editorial={editorial} />
+                </CommentStoreProvider>
+              ))}
+            </Stack>
+          ) : (
+            <Alert severity="info">
+              No editorial found for this problem. Be the first to write one!
+            </Alert>
+          )
+        ) : (
+          <>
+            <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+            <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+            <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+            <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+          </>
+        )}
       </CardContent>
     </Card>
   );

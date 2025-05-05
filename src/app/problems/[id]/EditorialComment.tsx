@@ -147,12 +147,13 @@ function EditorialComment(props: { comment: Comment }) {
             />
           )}
         </div>
-
-        <EditorialCommentAddForm
-          open={replyFormOpen}
-          parentCommentId={comment.id}
-          sx={{ marginBottom: "16px" }}
-        />
+        {replyFormOpen && (
+          <EditorialCommentAddForm
+            setOpen={setReplyFormOpen}
+            parentCommentId={comment.id}
+            sx={{ marginBottom: "16px" }}
+          />
+        )}
 
         {comment.childComments.length > 0 && (
           <Box

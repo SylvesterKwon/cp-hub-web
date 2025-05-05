@@ -133,6 +133,7 @@ export type EditorialDetail = {
     username: string;
     profilePictureUrl: string;
   };
+  commentCount: number;
   upvoteCount: number;
   downvoteCount: number;
   myVote?: EditorialVoteType;
@@ -198,7 +199,7 @@ export type Comment = {
   childComments: Comment[];
 };
 
-export type GetCommentResponse = { results: Comment[] };
+export type GetCommentResponse = { results: Comment[]; totalCount: number };
 
 export type AddCommentRequestDto = {
   context: CommentContext;

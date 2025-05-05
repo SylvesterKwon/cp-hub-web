@@ -13,11 +13,11 @@ import { setFormError } from "@/utils/setFormError";
 import { useEffect } from "react";
 
 export default function EditorialCommentAddForm(props: {
-  open: boolean;
+  setOpen?: (open: boolean) => void;
   parentCommentId?: string;
   sx?: SxProps<Theme>;
 }) {
-  const { open, parentCommentId, sx } = props;
+  const { setOpen, parentCommentId, sx } = props;
   const formContext = useForm<AddCommentForm>();
 
   useEffect(() => {
@@ -32,6 +32,7 @@ export default function EditorialCommentAddForm(props: {
     try {
       await addComment(data);
       formContext.reset();
+      setOpen?.(false);
     } catch (e) {
       if (
         e instanceof CpHubError &&
@@ -40,7 +41,6 @@ export default function EditorialCommentAddForm(props: {
         setFormError(formContext, e);
     }
   }
-  if (!open) return <></>;
   return (
     <FormContainer<AddCommentForm>
       formContext={formContext}

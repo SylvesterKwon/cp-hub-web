@@ -8,7 +8,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { CommentContextType, EditorialDetail } from "@/clients/cpHub/type";
+import { EditorialDetail } from "@/clients/cpHub/type";
 import {
   ArrowDownward,
   ArrowUpward,
@@ -19,7 +19,7 @@ import MarkdownText from "@/components/MarkdownText";
 import { useProblemEditorialStore } from "./stores/problemEditorialStore";
 import { useState } from "react";
 import EditorialCommentSection from "./EditorialCommentSection";
-import CommentStoreProvider from "@/app/components/providers/CommentStoreProvider";
+import { useCommentStore } from "@/app/stores/commentStore";
 
 export default function ProblemEditorial(props: {
   editorial: EditorialDetail;
@@ -28,6 +28,7 @@ export default function ProblemEditorial(props: {
 
   const vote = useProblemEditorialStore((state) => state.vote);
   const [commentSectionOpen, setCommentSectionOpen] = useState(false);
+  const commentTotalCount = useCommentStore((state) => state.totalCount);
 
   return (
     <Card color="secondary" variant="outlined">
@@ -97,7 +98,9 @@ export default function ProblemEditorial(props: {
                 setCommentSectionOpen((prev) => !prev);
               }}
             >
-              3
+              {commentTotalCount !== undefined
+                ? commentTotalCount
+                : editorial.commentCount}
             </Button>
           </Stack>
           <Typography variant="body2" color="text.secondary">
@@ -117,16 +120,7 @@ export default function ProblemEditorial(props: {
             )}
           </Typography>
         </Stack>
-        <CommentStoreProvider
-          context={{
-            type: CommentContextType.EDITORIAL,
-            id: editorial.id,
-          }}
-        >
-          {commentSectionOpen && (
-            <EditorialCommentSection editorialId={editorial.id} />
-          )}
-        </CommentStoreProvider>
+        {commentSectionOpen && <EditorialCommentSection />}
       </Stack>
     </Card>
   );
@@ -141,7 +135,7 @@ function UserCard(props: { username: string; profilePictureUrl?: string }) {
         <Typography sx={{ fontWeight: "medium" }}>{username}</Typography>
         <Typography variant="body2" color="text.secondary">
           234 editorials | 1234 comments
-          {/* TODO: 스탯이나 소속 연동하기 */}
+          {/* TODO: H-index 연동 */}
         </Typography>
       </Stack>
     </Stack>
