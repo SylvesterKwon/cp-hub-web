@@ -19,6 +19,7 @@ const initialFilter: ProblemEditorialFilter = {
 };
 
 export type ProblemEditorialListState = {
+  isLoading: boolean;
   problemId: string;
   totalCount: number;
   editorialList: EditorialDetail[];
@@ -33,17 +34,20 @@ export type ProblemEditorialStore = ReturnType<
 
 export const createProblemEditorialStore = (problemId: string) => {
   return createStore<ProblemEditorialListState>((set, get) => ({
+    isLoading: true,
     problemId,
     totalCount: 0,
     editorialList: [],
     filter: initialFilter,
     setFilter: async (newFilter) => {
+      set({ isLoading: true });
       const problemId = get().problemId;
       const res = await cpHubClient.getProblemEditorialList(
         problemId,
         newFilter
       );
       set({
+        isLoading: false,
         filter: newFilter,
         editorialList: res.results,
         totalCount: res.totalCount,

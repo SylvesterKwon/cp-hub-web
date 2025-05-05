@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
@@ -17,12 +18,22 @@ import "prismjs/components/prism-rust";
 import "prismjs/components/prism-kotlin";
 import "prismjs/components/prism-dart";
 
-export default function MarkdownText(props: { content: string }) {
-  const { content } = props;
+export default function MarkdownText(props: {
+  content: string;
+  disallowedElements?: string[];
+}) {
+  const { content, disallowedElements } = props;
   return (
     <Markdown
       remarkPlugins={[remarkGfm, remarkMath]}
       rehypePlugins={[rehypeKatex, rehypePrism]}
+      disallowedElements={disallowedElements}
+      components={{
+        p(props) {
+          const { node, ...rest } = props;
+          return <p className="markdown-text-p" {...rest} />;
+        },
+      }}
     >
       {content}
     </Markdown>

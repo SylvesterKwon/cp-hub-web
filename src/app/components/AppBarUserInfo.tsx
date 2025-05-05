@@ -2,6 +2,7 @@
 import ButtonLink from "@/components/ButtonLink";
 import SignInButton from "./SignInButton";
 import { useUserStore } from "../stores/userStore";
+import { Avatar, Stack } from "@mui/material";
 
 type AppBarUserInfoProps = {
   initialUserInfo?: {
@@ -15,7 +16,14 @@ export default function AppBarUserInfo(props: AppBarUserInfoProps) {
   const userInfo = clientUserInfo || props.initialUserInfo;
 
   return userInfo ? (
-    `Welcome ${userInfo.username}`
+    <Stack direction="row" spacing={1} alignItems="center">
+      <Avatar
+        sx={{ width: 36, height: 36 }}
+        alt={userInfo.username}
+        src={clientUserInfo?.profilePictureUrl}
+      />
+      <div>{userInfo.username}</div>
+    </Stack>
   ) : (
     <>
       <SignInButton />

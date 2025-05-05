@@ -1,12 +1,14 @@
+"use client";
 import {
   Avatar,
   Button,
   ButtonGroup,
   Card,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { EditorialDetail, EditorialVoteAction } from "@/clients/cpHub/type";
+import { EditorialDetail } from "@/clients/cpHub/type";
 import {
   ArrowDownward,
   ArrowUpward,
@@ -14,17 +16,28 @@ import {
 } from "@mui/icons-material";
 import dayjs from "dayjs";
 import MarkdownText from "@/components/MarkdownText";
+import { useProblemEditorialStore } from "./stores/problemEditorialStore";
+import { useState } from "react";
+import EditorialCommentSection from "./EditorialCommentSection";
+import { useCommentStore } from "@/app/stores/commentStore";
 
 export default function ProblemEditorial(props: {
   editorial: EditorialDetail;
-  onVote: (editorialId: string, action: EditorialVoteAction) => void;
 }) {
-  const { editorial, onVote } = props;
+  const { editorial } = props;
+
+  const vote = useProblemEditorialStore((state) => state.vote);
+  const [commentSectionOpen, setCommentSectionOpen] = useState(false);
+  const commentTotalCount = useCommentStore((state) => state.totalCount);
 
   return (
     <Card color="secondary" variant="outlined">
       <Stack direction="column" spacing={2} padding={2}>
-        <UserCard username={editorial.author.username} />
+        <UserCard
+          username={editorial.author.username}
+          profilePictureUrl={editorial.author.profilePictureUrl}
+        />
+
         <MarkdownText content={editorial.content} />
         <Stack
           direction="row"
@@ -44,7 +57,7 @@ export default function ProblemEditorial(props: {
                   variant="contained"
                   color="blue"
                   startIcon={<ArrowUpward />}
-                  onClick={() => onVote(editorial.id, "undo")}
+                  onClick={() => vote(editorial.id, "undo")}
                 >
                   {editorial.upvoteCount}
                 </Button>
@@ -52,7 +65,7 @@ export default function ProblemEditorial(props: {
                 <Button
                   variant="outlined"
                   startIcon={<ArrowUpward />}
-                  onClick={() => onVote(editorial.id, "upvote")}
+                  onClick={() => vote(editorial.id, "upvote")}
                 >
                   {editorial.upvoteCount}
                 </Button>
@@ -62,7 +75,7 @@ export default function ProblemEditorial(props: {
                   variant="contained"
                   color="red"
                   startIcon={<ArrowDownward />}
-                  onClick={() => onVote(editorial.id, "undo")}
+                  onClick={() => vote(editorial.id, "undo")}
                 >
                   {editorial.downvoteCount}
                 </Button>
@@ -70,7 +83,7 @@ export default function ProblemEditorial(props: {
                 <Button
                   variant="outlined"
                   startIcon={<ArrowDownward />}
-                  onClick={() => onVote(editorial.id, "downvote")}
+                  onClick={() => vote(editorial.id, "downvote")}
                 >
                   {editorial.downvoteCount}
                 </Button>
@@ -81,33 +94,48 @@ export default function ProblemEditorial(props: {
               size="small"
               color="info"
               startIcon={<CommentOutlined />}
+              onClick={() => {
+                setCommentSectionOpen((prev) => !prev);
+              }}
             >
-              3
+              {commentTotalCount !== undefined
+                ? commentTotalCount
+                : editorial.commentCount}
             </Button>
           </Stack>
           <Typography variant="body2" color="text.secondary">
             {`${dayjs(editorial.createdAt).toString()}`}
+            {editorial.createdAt !== editorial.updatedAt && (
+              <span>
+                {" "}
+                <Tooltip
+                  title={`Last update: ${dayjs(
+                    editorial.updatedAt
+                  ).toString()}`}
+                  placement="top"
+                >
+                  <u>(Edited)</u>
+                </Tooltip>
+              </span>
+            )}
           </Typography>
         </Stack>
+        {commentSectionOpen && <EditorialCommentSection />}
       </Stack>
     </Card>
   );
 }
 
-function UserCard(props: { username: string }) {
-  const { username } = props;
+function UserCard(props: { username: string; profilePictureUrl?: string }) {
+  const { username, profilePictureUrl } = props;
   return (
-    <Stack direction="row" spacing={2} alignItems="center">
-      <Avatar
-        alt={username}
-        src="https://sylvesterkwon.com/static/990203867e2bfc727a5b35979bd7fce8/d4bf4/profile-pic.avif"
-      />
+    <Stack direction="row" spacing={1.5} alignItems="center">
+      <Avatar alt={username} src={profilePictureUrl} />
       <Stack direction="column">
-        <Typography variant="body2" color="text">
-          {username}
-        </Typography>
+        <Typography sx={{ fontWeight: "medium" }}>{username}</Typography>
         <Typography variant="body2" color="text.secondary">
-          WIP - simple stats
+          234 editorials | 1234 comments
+          {/* TODO: H-index 연동 */}
         </Typography>
       </Stack>
     </Stack>
