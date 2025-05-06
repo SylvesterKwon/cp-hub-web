@@ -34,15 +34,17 @@ import CommentStoreProvider from "@/app/components/providers/CommentStoreProvide
 import { CommentContextType, EditorialDetail } from "@/clients/cpHub/type";
 import { useCommentStore } from "@/app/stores/commentStore";
 import { useUserStore } from "@/app/stores/userStore";
+import { useEditorialStore } from "./stores/editorialStore";
 
 export default function MyEditorial(props: { problemId: string }) {
-  const problemId = props.problemId;
+  const { problemId } = props;
   const editorial = useMyEditorialStore((state) => state.editorial);
   const setEditorial = useMyEditorialStore((state) => state.setEditorial);
   const isLoading = useMyEditorialStore((state) => state.isLoading);
   const deleteEditorial = useMyEditorialStore((state) => state.deleteEditorial);
-  const userInfo = useUserStore((state) => state.userInfo);
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const refresh = useEditorialStore((state) => state.refresh);
+  const userInfo = useUserStore((state) => state.userInfo);
 
   const [interactionStatus, setInteractionStatus] = useState<"View" | "Edit">(
     "View"
@@ -55,8 +57,9 @@ export default function MyEditorial(props: { problemId: string }) {
   }, [problemId, setEditorial]);
 
   async function onDelete() {
-    deleteEditorial(problemId);
+    await deleteEditorial(problemId);
     setInteractionStatus("View");
+    await refresh();
   }
 
   return (

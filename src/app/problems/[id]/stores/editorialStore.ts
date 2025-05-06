@@ -25,6 +25,7 @@ export type EditorialListState = {
   editorialList: EditorialDetail[];
   filter: EditorialFilter;
   setFilter: (filter: EditorialFilter) => Promise<void>;
+  refresh: () => Promise<void>;
   vote: (editorialId: string, action: EditorialVoteAction) => Promise<void>;
 };
 
@@ -45,6 +46,16 @@ export const createEditorialStore = (problemId: string) => {
       set({
         isLoading: false,
         filter: newFilter,
+        editorialList: res.results,
+        totalCount: res.totalCount,
+      });
+    },
+    refresh: async () => {
+      set({ isLoading: true });
+      const problemId = get().problemId;
+      const res = await cpHubClient.getEditorialList(problemId, get().filter);
+      set({
+        isLoading: false,
         editorialList: res.results,
         totalCount: res.totalCount,
       });

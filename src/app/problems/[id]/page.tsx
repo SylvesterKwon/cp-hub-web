@@ -83,12 +83,12 @@ export default async function ProblemDetailPage(props: {
           </Card>
         </Grid>
         <Grid size={8}>
-          <Stack spacing={2}>
-            <MyEditorial problemId={problemId} />
-            <EditorialListStoreProvider problemId={problemId}>
+          <EditorialListStoreProvider problemId={problemId}>
+            <Stack spacing={2}>
+              <MyEditorial problemId={problemId} />
               <EditorialList />
-            </EditorialListStoreProvider>
-          </Stack>
+            </Stack>
+          </EditorialListStoreProvider>
         </Grid>
         <Grid size={4}>
           <ProblemRating />

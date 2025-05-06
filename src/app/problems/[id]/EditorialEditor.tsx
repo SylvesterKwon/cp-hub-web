@@ -3,18 +3,11 @@
 import { FormContainer, TextFieldElement, useForm } from "react-hook-form-mui";
 import { useMyEditorialStore } from "./stores/myEditorialStore";
 import { UpdateMyEditorialRequestDto } from "./types/editorial";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Stack,
-} from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useState } from "react";
 import MarkdownPreview from "@/app/components/MarkdownPreview";
 import { PostAdd } from "@mui/icons-material";
+import { useEditorialStore } from "./stores/editorialStore";
 
 export default function EditorialEditor(props: {
   problemId: string;
@@ -24,6 +17,8 @@ export default function EditorialEditor(props: {
 
   const editorial = useMyEditorialStore((state) => state.editorial);
   const updateEditorial = useMyEditorialStore((state) => state.updateEditorial);
+  const refresh = useEditorialStore((state) => state.refresh);
+
   const formContext = useForm<UpdateMyEditorialRequestDto>({
     defaultValues: {
       content: editorial ? editorial.content : "",
@@ -35,6 +30,7 @@ export default function EditorialEditor(props: {
     await updateEditorial(problemId, data.content);
     formContext.reset();
     setInteractionStatus("View");
+    await refresh();
   }
 
   return (
