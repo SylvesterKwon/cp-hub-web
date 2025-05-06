@@ -13,8 +13,8 @@ import {
   GetContestDetailResponse,
   GetMeResponse,
   GetProblemDetailResponse,
-  GetProblemEditorialListQuery,
-  GetProblemEditorialListResponse,
+  GetEditorialListQuery,
+  GetEditorialListResponse,
   GetProblemListQuery,
   GetProblemListResponse,
   SignInRequestDto,
@@ -54,17 +54,14 @@ class CpHubClient extends CpHubBaseClient {
     return res as GetProblemDetailResponse;
   }
 
-  async getMyProblemEditorial(problemId: string) {
+  async getMyEditorial(problemId: string) {
     const res = await this.get(`/problem/${problemId}/my-editorial`);
     return res as EditorialDetail;
   }
 
-  async getProblemEditorialList(
-    problemId: string,
-    dto: GetProblemEditorialListQuery
-  ) {
+  async getEditorialList(problemId: string, dto: GetEditorialListQuery) {
     const res = await this.get(`/problem/${problemId}/editorial`, dto);
-    return res as GetProblemEditorialListResponse;
+    return res as GetEditorialListResponse;
   }
 
   async editorialVote(editorialId: string, dto: EditorialVoteRequestDto) {

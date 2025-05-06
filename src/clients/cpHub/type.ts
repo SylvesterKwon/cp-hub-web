@@ -145,13 +145,13 @@ export type EditorialListSortBy =
   | "createdAtAsc"
   | "updatedAtDesc";
 
-export type GetProblemEditorialListQuery = {
+export type GetEditorialListQuery = {
   page?: number;
   pageSize?: number;
   sortBy?: EditorialListSortBy;
 };
 
-export type GetProblemEditorialListResponse = {
+export type GetEditorialListResponse = {
   results: EditorialDetail[];
   totalCount: number;
 };

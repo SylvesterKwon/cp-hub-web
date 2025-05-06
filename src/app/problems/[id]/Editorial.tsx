@@ -16,17 +16,15 @@ import {
 } from "@mui/icons-material";
 import dayjs from "dayjs";
 import MarkdownText from "@/components/MarkdownText";
-import { useProblemEditorialStore } from "./stores/problemEditorialStore";
+import { useEditorialStore } from "./stores/editorialStore";
 import { useState } from "react";
 import EditorialCommentSection from "./EditorialCommentSection";
 import { useCommentStore } from "@/app/stores/commentStore";
 
-export default function ProblemEditorial(props: {
-  editorial: EditorialDetail;
-}) {
+export default function Editorial(props: { editorial: EditorialDetail }) {
   const { editorial } = props;
 
-  const vote = useProblemEditorialStore((state) => state.vote);
+  const vote = useEditorialStore((state) => state.vote);
   const [commentSectionOpen, setCommentSectionOpen] = useState(false);
   const commentTotalCount = useCommentStore((state) => state.totalCount);
 
@@ -134,7 +132,7 @@ function UserCard(props: { username: string; profilePictureUrl?: string }) {
       <Stack direction="column">
         <Typography sx={{ fontWeight: "medium" }}>{username}</Typography>
         <Typography variant="body2" color="text.secondary">
-          234 editorials | 1234 comments
+          citations 1,342 | h-index 118
           {/* TODO: H-index 연동 */}
         </Typography>
       </Stack>

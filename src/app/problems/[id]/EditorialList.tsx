@@ -8,27 +8,25 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useProblemEditorialStore } from "./stores/problemEditorialStore";
+import { useEditorialStore } from "./stores/editorialStore";
 import { useEffect } from "react";
-import ProblemEditorial from "./ProblemEditorial";
+import Editorial from "./Editorial";
 import { FormContainer, SelectElement, useForm } from "react-hook-form-mui";
 import { CommentContextType, EditorialListSortBy } from "@/clients/cpHub/type";
 import CommentStoreProvider from "@/app/components/providers/CommentStoreProvider";
 
-type ProblemEditorialListFilterForm = {
+type EditorialListFilterForm = {
   sortBy: EditorialListSortBy;
 };
 
-export default function ProblemEditorialList() {
-  const formContext = useForm<ProblemEditorialListFilterForm>({
+export default function EditorialList() {
+  const formContext = useForm<EditorialListFilterForm>({
     defaultValues: { sortBy: "recommended" },
   });
-  const editorialList = useProblemEditorialStore(
-    (state) => state.editorialList
-  );
-  const editorialLoading = useProblemEditorialStore((state) => state.isLoading);
-  const setFilter = useProblemEditorialStore((state) => state.setFilter);
-  const filter = useProblemEditorialStore((state) => state.filter);
+  const editorialList = useEditorialStore((state) => state.editorialList);
+  const editorialLoading = useEditorialStore((state) => state.isLoading);
+  const setFilter = useEditorialStore((state) => state.setFilter);
+  const filter = useEditorialStore((state) => state.filter);
   useEffect(() => {
     setFilter({
       page: 1,
@@ -52,9 +50,7 @@ export default function ProblemEditorialList() {
               <Typography variant="body2" color="text.secondary">
                 Sort by:
               </Typography>
-              <FormContainer<ProblemEditorialListFilterForm>
-                formContext={formContext}
-              >
+              <FormContainer<EditorialListFilterForm> formContext={formContext}>
                 <SelectElement
                   name="sortBy"
                   size="small"
@@ -105,7 +101,7 @@ export default function ProblemEditorialList() {
                     id: editorial.id,
                   }}
                 >
-                  <ProblemEditorial editorial={editorial} />
+                  <Editorial editorial={editorial} />
                 </CommentStoreProvider>
               ))}
             </Stack>

@@ -6,46 +6,42 @@ import { useStore } from "zustand";
 
 // reference: https://zustand.docs.pmnd.rs/guides/initialize-state-with-props
 
-export type ProblemEditorialFilter = {
+export type EditorialFilter = {
   page: number;
   pageSize: number;
   sortBy?: "recommended" | "trending" | "createdAtAsc" | "updatedAtDesc";
 };
 
-const initialFilter: ProblemEditorialFilter = {
+const initialFilter: EditorialFilter = {
   page: 1,
   pageSize: 10,
   // sortBy
 };
 
-export type ProblemEditorialListState = {
+export type EditorialListState = {
   isLoading: boolean;
   problemId: string;
   totalCount: number;
   editorialList: EditorialDetail[];
-  filter: ProblemEditorialFilter;
-  setFilter: (filter: ProblemEditorialFilter) => Promise<void>;
+  filter: EditorialFilter;
+  setFilter: (filter: EditorialFilter) => Promise<void>;
   vote: (editorialId: string, action: EditorialVoteAction) => Promise<void>;
 };
 
-export type ProblemEditorialStore = ReturnType<
-  typeof createProblemEditorialStore
->;
+export type EditorialStore = ReturnType<typeof createEditorialStore>;
 
-export const createProblemEditorialStore = (problemId: string) => {
-  return createStore<ProblemEditorialListState>((set, get) => ({
+export const createEditorialStore = (problemId: string) => {
+  return createStore<EditorialListState>((set, get) => ({
     isLoading: true,
     problemId,
     totalCount: 0,
+    myEditorial: null,
     editorialList: [],
     filter: initialFilter,
     setFilter: async (newFilter) => {
       set({ isLoading: true });
       const problemId = get().problemId;
-      const res = await cpHubClient.getProblemEditorialList(
-        problemId,
-        newFilter
-      );
+      const res = await cpHubClient.getEditorialList(problemId, newFilter);
       set({
         isLoading: false,
         filter: newFilter,
@@ -74,16 +70,13 @@ export const createProblemEditorialStore = (problemId: string) => {
 
 // hooks
 
-export const ProblemEditorialStoreContext =
-  createContext<ProblemEditorialStore | null>(null);
+export const EditorialStoreContext = createContext<EditorialStore | null>(null);
 
-export function useProblemEditorialStore<T>(
-  selector: (state: ProblemEditorialListState) => T
+export function useEditorialStore<T>(
+  selector: (state: EditorialListState) => T
 ): T {
-  const store = useContext(ProblemEditorialStoreContext);
+  const store = useContext(EditorialStoreContext);
   if (!store)
-    throw new Error(
-      "Missing ProblemEditorialStoreContext.Provider in the tree"
-    );
+    throw new Error("Missing EditorialStoreContext.Provider in the tree");
   return useStore(store, selector);
 }

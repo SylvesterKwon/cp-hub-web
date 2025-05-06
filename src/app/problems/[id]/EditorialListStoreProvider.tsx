@@ -2,22 +2,22 @@
 
 import { useRef } from "react";
 import {
-  createProblemEditorialStore,
-  ProblemEditorialStore,
-  ProblemEditorialStoreContext,
-} from "./stores/problemEditorialStore";
+  createEditorialStore,
+  EditorialStore,
+  EditorialStoreContext,
+} from "./stores/editorialStore";
 
 export default function EditorialListStoreProvider(props: {
   children: React.ReactNode;
   problemId: string;
 }) {
-  const storeRef = useRef<ProblemEditorialStore>(null);
+  const storeRef = useRef<EditorialStore>(null);
   if (!storeRef.current)
-    storeRef.current = createProblemEditorialStore(props.problemId);
+    storeRef.current = createEditorialStore(props.problemId);
 
   return (
-    <ProblemEditorialStoreContext.Provider value={storeRef.current}>
+    <EditorialStoreContext.Provider value={storeRef.current}>
       {props.children}
-    </ProblemEditorialStoreContext.Provider>
+    </EditorialStoreContext.Provider>
   );
 }
