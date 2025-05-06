@@ -6,6 +6,7 @@ import {
   CardHeader,
   Skeleton,
   Stack,
+  TablePagination,
   Typography,
 } from "@mui/material";
 import { useEditorialStore } from "./stores/editorialStore";
@@ -14,26 +15,51 @@ import Editorial from "./Editorial";
 import { FormContainer, SelectElement, useForm } from "react-hook-form-mui";
 import { CommentContextType, EditorialListSortBy } from "@/clients/cpHub/type";
 import CommentStoreProvider from "@/app/components/providers/CommentStoreProvider";
+import { useSearchParams } from "next/navigation";
 
 type EditorialListFilterForm = {
   sortBy: EditorialListSortBy;
 };
 
 export default function EditorialList() {
-  const formContext = useForm<EditorialListFilterForm>({
-    defaultValues: { sortBy: "recommended" },
-  });
   const editorialList = useEditorialStore((state) => state.editorialList);
   const editorialLoading = useEditorialStore((state) => state.isLoading);
   const setFilter = useEditorialStore((state) => state.setFilter);
   const filter = useEditorialStore((state) => state.filter);
+  const totalCount = useEditorialStore((state) => state.totalCount);
+
+  const searchParams = useSearchParams();
+  const searchParamEditorialSortBy = searchParams.get("editorialSortBy");
+  const defaultEditorialSortBy =
+    searchParamEditorialSortBy === "recommended" ||
+    searchParamEditorialSortBy === "trending" ||
+    searchParamEditorialSortBy === "createdAtAsc" ||
+    searchParamEditorialSortBy === "updatedAtDesc"
+      ? searchParamEditorialSortBy
+      : "recommended";
+
+  const formContext = useForm<EditorialListFilterForm>({
+    defaultValues: { sortBy: defaultEditorialSortBy },
+  });
+
+  // set initial filter by query string
   useEffect(() => {
     setFilter({
-      page: 1,
-      pageSize: 10,
-      sortBy: "recommended",
+      page:
+        Number.isInteger(Number(searchParams.get("editorialPage"))) &&
+        Number(searchParams.get("editorialPage"))
+          ? Number(searchParams.get("editorialPage"))
+          : 1,
+      pageSize:
+        Number.isInteger(Number(searchParams.get("editorialPageSize"))) &&
+        Number(searchParams.get("editorialPageSize"))
+          ? Number(searchParams.get("editorialPageSize"))
+          : 10,
+      sortBy: defaultEditorialSortBy,
     });
-  }, []); // TODO: just for test, Add inifinite scroll later
+  }, [defaultEditorialSortBy, searchParams, setFilter]);
+
+  // TODO: add querystring to get define default filter
 
   return (
     <Card variant="outlined">
@@ -45,7 +71,13 @@ export default function EditorialList() {
             alignItems="center"
             spacing={1}
           >
-            <Typography variant="h5">User editorials</Typography>
+            <Stack>
+              <Typography variant="h5">User editorials</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {totalCount} editorials found
+              </Typography>
+            </Stack>
+
             <Stack direction="row" alignItems="center" spacing={1}>
               <Typography variant="body2" color="text.secondary">
                 Sort by:
@@ -88,7 +120,6 @@ export default function EditorialList() {
         }
       />
       <CardContent>
-        {/* TODO: Add my editorial */}
         {/* TODO: Add pagination (or inifnite scroll) */}
         {editorialLoading === false ? (
           editorialList.length ? (
@@ -104,6 +135,30 @@ export default function EditorialList() {
                   <Editorial editorial={editorial} />
                 </CommentStoreProvider>
               ))}
+              <Stack
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                spacing={2}
+              >
+                <TablePagination
+                  component="div"
+                  count={totalCount}
+                  rowsPerPage={filter.pageSize}
+                  page={filter.page - 1}
+                  onPageChange={(e, value) =>
+                    setFilter({ ...filter, page: value + 1 })
+                  }
+                  onRowsPerPageChange={(e) => {
+                    setFilter({
+                      ...filter,
+                      pageSize: Number(e.target.value),
+                      page: 1,
+                    });
+                  }}
+                  rowsPerPageOptions={[1, 5, 10, 25]}
+                />
+              </Stack>
             </Stack>
           ) : (
             <Alert severity="info">

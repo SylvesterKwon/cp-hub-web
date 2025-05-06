@@ -20,6 +20,7 @@ import { useEditorialStore } from "./stores/editorialStore";
 import { useState } from "react";
 import EditorialCommentSection from "./EditorialCommentSection";
 import { useCommentStore } from "@/app/stores/commentStore";
+import { useUserStore } from "@/app/stores/userStore";
 
 export default function Editorial(props: { editorial: EditorialDetail }) {
   const { editorial } = props;
@@ -126,11 +127,14 @@ export default function Editorial(props: { editorial: EditorialDetail }) {
 
 function UserCard(props: { username: string; profilePictureUrl?: string }) {
   const { username, profilePictureUrl } = props;
+  const userInfo = useUserStore((state) => state.userInfo);
   return (
     <Stack direction="row" spacing={1.5} alignItems="center">
       <Avatar alt={username} src={profilePictureUrl} />
       <Stack direction="column">
-        <Typography sx={{ fontWeight: "medium" }}>{username}</Typography>
+        <Typography sx={{ fontWeight: "medium" }}>{`${username}${
+          userInfo?.username === username ? " (me)" : ""
+        }`}</Typography>
         <Typography variant="body2" color="text.secondary">
           citations 1,342 | h-index 118
           {/* TODO: H-index 연동 */}

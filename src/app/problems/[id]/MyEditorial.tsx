@@ -14,6 +14,7 @@ import {
   Stack,
   Tooltip,
   Typography,
+  Link as MUILink,
 } from "@mui/material";
 import { useMyEditorialStore } from "./stores/myEditorialStore";
 import { useEffect, useState } from "react";
@@ -35,6 +36,8 @@ import { CommentContextType, EditorialDetail } from "@/clients/cpHub/type";
 import { useCommentStore } from "@/app/stores/commentStore";
 import { useUserStore } from "@/app/stores/userStore";
 import { useEditorialStore } from "./stores/editorialStore";
+import ButtonLink from "@/components/ButtonLink";
+import Link from "next/link";
 
 export default function MyEditorial(props: { problemId: string }) {
   const { problemId } = props;
@@ -60,6 +63,10 @@ export default function MyEditorial(props: { problemId: string }) {
     await deleteEditorial(problemId);
     setInteractionStatus("View");
     await refresh();
+  }
+
+  if (!userInfo && !isLoading) {
+    return <LoginToAddEditorial />;
   }
 
   return (
@@ -233,9 +240,22 @@ function MyExistingEditorial(props: { editorial: EditorialDetail }) {
 
 function LoginToAddEditorial() {
   return (
-    <Stack justifyContent="center">
-      <Button startIcon={<EditNoteOutlined />}>Add new editorial</Button>
-    </Stack>
+    <Card variant="outlined">
+      <CardHeader title={<Typography variant="h5">My editorial</Typography>} />
+      <CardContent>
+        <Stack justifyContent="center">
+          <Typography variant="body1" textAlign="center">
+            <Link
+              href={`/sign-in?redirect=${window.location.pathname}`}
+              passHref
+            >
+              <MUILink>Sign in</MUILink>
+            </Link>{" "}
+            to contribute
+          </Typography>
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }
 

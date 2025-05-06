@@ -15,7 +15,7 @@ export type EditorialFilter = {
 const initialFilter: EditorialFilter = {
   page: 1,
   pageSize: 10,
-  // sortBy
+  sortBy: "recommended",
 };
 
 export type EditorialListState = {
