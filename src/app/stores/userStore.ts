@@ -4,7 +4,7 @@ import cpHubClient from "@/clients/cpHub/cpHubClient";
 import { GetMeResponse } from "@/clients/cpHub/type";
 
 export type UserStore = {
-  userInfo: GetMeResponse;
+  userInfo: GetMeResponse | undefined;
   getUserInfo: () => Promise<void>;
   signIn: (dto: SignInForm) => Promise<void>;
   signUp: (dto: SignUpForm) => Promise<void>;

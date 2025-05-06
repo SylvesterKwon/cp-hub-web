@@ -1,3 +1,8 @@
+import {
+  DeleteMyEditorialResponse,
+  UpdateMyEditorialRequestDto,
+  UpdateMyEditorialResponse,
+} from "@/app/problems/[id]/types/editorial";
 import { CpHubBaseClient } from "./CpHubBase";
 import {
   AddCommentRequestDto,
@@ -23,6 +28,7 @@ import {
 } from "./type";
 
 class CpHubClient extends CpHubBaseClient {
+  // USER API
   async signIn(dto: SignInRequestDto) {
     // TODO: status code 등 접근할 수 있도록 baseclient 수정 필요. 지금은 body만 접근 가능
     const res = await this.post("/user/sign-in", dto);
@@ -39,14 +45,10 @@ class CpHubClient extends CpHubBaseClient {
     return res as GetMeResponse;
   }
 
+  // PROBLEM API
   async getProblemList(dto: GetProblemListQuery) {
     const res = await this.get("/problem", dto);
     return res as GetProblemListResponse;
-  }
-
-  async getContestDetail(contestId: string) {
-    const res = await this.get(`/contest/${contestId}`);
-    return res as GetContestDetailResponse;
   }
 
   async getProblemDetail(problemId: string) {
@@ -64,11 +66,31 @@ class CpHubClient extends CpHubBaseClient {
     return res as GetEditorialListResponse;
   }
 
+  async updateMyEditorial(problemId: string, dto: UpdateMyEditorialRequestDto) {
+    const res = await this.post(
+      `/problem/${problemId}/my-editorial/update`,
+      dto
+    );
+    return res as UpdateMyEditorialResponse;
+  }
+
+  async deleteMyEditorial(problemId: string) {
+    const res = await this.post(`/problem/${problemId}/my-editorial/delete`);
+    return res as DeleteMyEditorialResponse;
+  }
+
+  // EDITORIAL API
   async editorialVote(editorialId: string, dto: EditorialVoteRequestDto) {
     const res = await this.post(`/editorial/${editorialId}/vote`, {
       action: dto.action,
     });
     return res as EditorialVoteResponse;
+  }
+
+  // CONTEST API
+  async getContestDetail(contestId: string) {
+    const res = await this.get(`/contest/${contestId}`);
+    return res as GetContestDetailResponse;
   }
 
   // COMMENT API

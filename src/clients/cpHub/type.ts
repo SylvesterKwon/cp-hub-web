@@ -218,3 +218,12 @@ export type DeleteCommentResponse = { message: string; commentId: string };
 export enum RoleType {
   ADMIN = "ADMIN",
 }
+
+export type UpdateMyEditorialRequestDto = {
+  content: string;
+};
+
+export type UpdateMyEditorialResponse = {
+  message: string;
+  editorialId: string;
+};

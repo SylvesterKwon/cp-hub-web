@@ -5,6 +5,11 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Skeleton,
   Stack,
   Tooltip,
@@ -18,18 +23,30 @@ import {
   ArrowDownward,
   ArrowUpward,
   CommentOutlined,
+  DeleteOutline,
+  EditNoteOutlined,
+  EditOutlined,
+  PostAdd,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
 import EditorialCommentSection from "./EditorialCommentSection";
 import CommentStoreProvider from "@/app/components/providers/CommentStoreProvider";
 import { CommentContextType, EditorialDetail } from "@/clients/cpHub/type";
 import { useCommentStore } from "@/app/stores/commentStore";
+import { useUserStore } from "@/app/stores/userStore";
 
 export default function MyEditorial(props: { problemId: string }) {
   const problemId = props.problemId;
   const editorial = useMyEditorialStore((state) => state.editorial);
   const setEditorial = useMyEditorialStore((state) => state.setEditorial);
   const isLoading = useMyEditorialStore((state) => state.isLoading);
+  const deleteEditorial = useMyEditorialStore((state) => state.deleteEditorial);
+  const userInfo = useUserStore((state) => state.userInfo);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+
+  const [interactionStatus, setInteractionStatus] = useState<"View" | "Edit">(
+    "View"
+  );
 
   // const commentTotalCount = useCommentStore((state) => state.totalCount);
 
@@ -37,9 +54,61 @@ export default function MyEditorial(props: { problemId: string }) {
     setEditorial(problemId);
   }, [problemId, setEditorial]);
 
+  async function onDelete() {
+    deleteEditorial(problemId);
+    setInteractionStatus("View");
+  }
+
   return (
     <Card variant="outlined">
-      <CardHeader title={<Typography variant="h5">My editorial</Typography>} />
+      <CardHeader
+        title={
+          <Stack
+            direction="row"
+            spacing={1}
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h5">My editorial</Typography>
+
+            <ButtonGroup>
+              {interactionStatus === "View" && editorial && (
+                <Button
+                  startIcon={<EditOutlined />}
+                  variant="outlined"
+                  aria-label="edit"
+                  size="small"
+                  onClick={() => setInteractionStatus("Edit")}
+                >
+                  Edit
+                </Button>
+              )}
+              {interactionStatus === "Edit" && (
+                <Button
+                  variant="outlined"
+                  aria-label="cancel"
+                  size="small"
+                  onClick={() => setInteractionStatus("View")}
+                >
+                  Cancel
+                </Button>
+              )}
+              {interactionStatus === "Edit" && editorial && (
+                <Button
+                  color="warning"
+                  startIcon={<DeleteOutline />}
+                  variant="outlined"
+                  aria-label="delete"
+                  size="small"
+                  onClick={() => setDeleteConfirmationOpen(true)}
+                >
+                  Delete
+                </Button>
+              )}
+            </ButtonGroup>
+          </Stack>
+        }
+      />
       <CardContent>
         {isLoading === false ? (
           editorial ? (
@@ -49,10 +118,29 @@ export default function MyEditorial(props: { problemId: string }) {
                 id: editorial.id,
               }}
             >
-              <MyExistingEditorial editorial={editorial} />
+              {interactionStatus === "View" ? (
+                <MyExistingEditorial editorial={editorial} />
+              ) : (
+                <EditorialEditor
+                  problemId={problemId}
+                  setInteractionStatus={setInteractionStatus}
+                />
+              )}
             </CommentStoreProvider>
+          ) : interactionStatus === "Edit" ? (
+            <EditorialEditor
+              problemId={problemId}
+              setInteractionStatus={setInteractionStatus}
+            />
           ) : (
-            <EditorialEditor problemId={problemId} />
+            <Stack justifyContent="center">
+              <Button
+                startIcon={<PostAdd />}
+                onClick={() => setInteractionStatus("Edit")}
+              >
+                Add new editorial
+              </Button>
+            </Stack>
           )
         ) : (
           <>
@@ -63,6 +151,11 @@ export default function MyEditorial(props: { problemId: string }) {
           </>
         )}
       </CardContent>
+      <EditorialDeleteConfirmationModal
+        open={deleteConfirmationOpen}
+        setOpen={setDeleteConfirmationOpen}
+        onOk={onDelete}
+      />
     </Card>
   );
 }
@@ -72,8 +165,6 @@ function MyExistingEditorial(props: { editorial: EditorialDetail }) {
 
   const [commentSectionOpen, setCommentSectionOpen] = useState(false);
   const commentTotalCount = useCommentStore((state) => state.totalCount);
-
-  console.log("commentTotalCount", commentTotalCount);
 
   return (
     <Stack direction="column" spacing={2}>
@@ -134,5 +225,42 @@ function MyExistingEditorial(props: { editorial: EditorialDetail }) {
       </Stack>
       {commentSectionOpen && <EditorialCommentSection />}
     </Stack>
+  );
+}
+
+function LoginToAddEditorial() {
+  return (
+    <Stack justifyContent="center">
+      <Button startIcon={<EditNoteOutlined />}>Add new editorial</Button>
+    </Stack>
+  );
+}
+
+function EditorialDeleteConfirmationModal(props: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onOk: () => void;
+}) {
+  const { open, setOpen, onOk } = props;
+  return (
+    <Dialog open={open}>
+      <DialogTitle>Deleting editorial</DialogTitle>
+      <DialogContent>
+        <DialogContentText>Are you sure?</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setOpen(false)}>Cancel</Button>
+        <Button
+          onClick={() => {
+            setOpen(false);
+            onOk();
+          }}
+          autoFocus
+          color="warning"
+        >
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
