@@ -145,13 +145,13 @@ export type EditorialListSortBy =
   | "createdAtAsc"
   | "updatedAtDesc";
 
-export type GetProblemEditorialListQuery = {
+export type GetEditorialListQuery = {
   page?: number;
   pageSize?: number;
   sortBy?: EditorialListSortBy;
 };
 
-export type GetProblemEditorialListResponse = {
+export type GetEditorialListResponse = {
   results: EditorialDetail[];
   totalCount: number;
 };
@@ -218,3 +218,12 @@ export type DeleteCommentResponse = { message: string; commentId: string };
 export enum RoleType {
   ADMIN = "ADMIN",
 }
+
+export type UpdateMyEditorialRequestDto = {
+  content: string;
+};
+
+export type UpdateMyEditorialResponse = {
+  message: string;
+  editorialId: string;
+};

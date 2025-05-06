@@ -18,12 +18,10 @@ export type ProblemFilterForm = {
 };
 
 export default function ProblemFilter() {
-  // WIP
   const { filter, setFilter } = useProblemListStore();
   const formContext = useForm<ProblemFilterForm>();
 
   async function handleSubmit(data: ProblemFilterForm) {
-    console.log(data);
     setFilter({
       ...filter,
       keyword: data.keyword?.length ? data.keyword : undefined,

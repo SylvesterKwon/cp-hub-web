@@ -28,12 +28,6 @@ export default function MarkdownText(props: {
       remarkPlugins={[remarkGfm, remarkMath]}
       rehypePlugins={[rehypeKatex, rehypePrism]}
       disallowedElements={disallowedElements}
-      components={{
-        p(props) {
-          const { node, ...rest } = props;
-          return <p className="markdown-text-p" {...rest} />;
-        },
-      }}
     >
       {content}
     </Markdown>

@@ -10,13 +10,15 @@ import {
   Link as MUILink,
   TableRow,
   Typography,
+  Stack,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Link from "next/link";
 import { ReactNode } from "react";
 import ProblemRating from "./ProblemRating";
-import ProblemSoutionList from "./ProblemEditorialList";
+import EditorialList from "./EditorialList";
 import EditorialListStoreProvider from "./EditorialListStoreProvider";
+import MyEditorial from "./MyEditorial";
 
 export default async function ProblemDetailPage(props: {
   params: { id: string };
@@ -82,7 +84,10 @@ export default async function ProblemDetailPage(props: {
         </Grid>
         <Grid size={8}>
           <EditorialListStoreProvider problemId={problemId}>
-            <ProblemSoutionList />
+            <Stack spacing={2}>
+              <MyEditorial problemId={problemId} />
+              <EditorialList />
+            </Stack>
           </EditorialListStoreProvider>
         </Grid>
         <Grid size={4}>
