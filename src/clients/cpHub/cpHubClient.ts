@@ -25,6 +25,8 @@ import {
   SignInRequestDto,
   SignInResponse,
   SignUpRequestDto,
+  GetReferenceInfoBulkRequestDto,
+  GetReferenceInfoBulkResponse,
 } from "./type";
 
 class CpHubClient extends CpHubBaseClient {
@@ -114,6 +116,12 @@ class CpHubClient extends CpHubBaseClient {
   async deleteComment(commentId: string) {
     const res = await this.post(`/comment/${commentId}/delete`);
     return res as DeleteCommentResponse;
+  }
+
+  // REFERENCE API
+  async getReferenceInfoBulk(dto: GetReferenceInfoBulkRequestDto) {
+    const res = await this.post(`/reference/info-bulk`, dto);
+    return res as GetReferenceInfoBulkResponse;
   }
 }
 

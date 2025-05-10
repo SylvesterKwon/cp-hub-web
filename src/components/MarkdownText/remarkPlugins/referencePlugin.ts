@@ -2,10 +2,15 @@ import { findAndReplace } from "mdast-util-find-and-replace";
 import { Plugin } from "unified";
 import { Root } from "mdast";
 
+export const referenceEditorialCaptureRule = {
+  type: "editorial",
+  regex: /(?<=^|\s)e#([A-Za-z0-9_]+)/g,
+};
+
 export const referenceEditorialPlugin: Plugin<[], Root> = () => {
   return function (tree) {
     findAndReplace(tree, [
-      /(?<=^|\s)e#([A-Za-z0-9_]+)/g,
+      referenceEditorialCaptureRule.regex,
       function (_, match) {
         return {
           type: "text",
@@ -29,10 +34,15 @@ export const referenceEditorialPlugin: Plugin<[], Root> = () => {
   };
 };
 
+export const referenceProblemCaptureRule = {
+  type: "problem",
+  regex: /(?<=^|\s)p#([A-Za-z0-9_]+)/g,
+};
+
 export const referenceProblemPlugin: Plugin<[], Root> = () => {
   return function (tree) {
     findAndReplace(tree, [
-      /(?<=^|\s)p#([A-Za-z0-9_]+)/g,
+      referenceProblemCaptureRule.regex,
       function (_, match) {
         return {
           type: "text",
@@ -57,10 +67,15 @@ export const referenceProblemPlugin: Plugin<[], Root> = () => {
   };
 };
 
+export const referenceContestCaptureRule = {
+  type: "contest",
+  regex: /(?<=^|\s)c#([A-Za-z0-9_]+)/g,
+};
+
 export const referenceContestPlugin: Plugin<[], Root> = () => {
   return function (tree) {
     findAndReplace(tree, [
-      /(?<=^|\s)c#([A-Za-z0-9_]+)/g,
+      referenceContestCaptureRule.regex,
       function (_, match) {
         return {
           type: "text",

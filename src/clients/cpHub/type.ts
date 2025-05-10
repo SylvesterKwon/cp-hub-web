@@ -227,3 +227,41 @@ export type UpdateMyEditorialResponse = {
   message: string;
   editorialId: string;
 };
+
+// REFERENCE
+export type GetReferenceInfoBulkRequestDto = {
+  ids: { id: string; type: "problem" | "editorial" | "contest" | "user" }[];
+};
+
+export type ProblemReferenceInfo = {
+  id: string;
+  name: string;
+};
+export type ContestReferenceInfo = {
+  id: string;
+  name: string;
+};
+export type EditorialReferenceInfo = {
+  id: string;
+  problem: {
+    id: string;
+    name: string;
+  };
+  author: {
+    id: string;
+    username: string;
+    profilePictureUrl?: string;
+  };
+};
+export type UserReferenceInfo = {
+  id: string;
+  username: string;
+  profilePictureUrl?: string;
+};
+
+export type GetReferenceInfoBulkResponse = {
+  problems: ProblemReferenceInfo[];
+  contests: ContestReferenceInfo[];
+  editorials: EditorialReferenceInfo[];
+  users: UserReferenceInfo[];
+};
