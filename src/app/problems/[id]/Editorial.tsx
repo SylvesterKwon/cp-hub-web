@@ -15,7 +15,7 @@ import {
   CommentOutlined,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
-import MarkdownText from "@/components/MarkdownText";
+import MarkdownText from "@/components/MarkdownText/remarkPlugins/MarkdownText";
 import { useEditorialStore } from "./stores/editorialStore";
 import { useState } from "react";
 import EditorialCommentSection from "./EditorialCommentSection";
