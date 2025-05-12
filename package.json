@@ -22,6 +22,8 @@
     "js-cookie": "^3.0.5",
     "katex": "^0.16.22",
     "material-react-table": "^3.2.1",
+    "mdast": "^3.0.0",
+    "mdast-util-find-and-replace": "^3.0.2",
     "next": "15.1.5",
     "next-themes": "^0.4.4",
     "prismjs": "^1.30.0",
@@ -34,11 +36,14 @@
     "rehype-prism": "^2.3.3",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@types/js-cookie": "^3.0.6",
+    "@types/mdast": "^4.0.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
