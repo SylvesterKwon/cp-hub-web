@@ -83,6 +83,11 @@ class CpHubClient extends CpHubBaseClient {
   }
 
   // EDITORIAL API
+  async getEditorial(editorialId: string) {
+    const res = await this.get(`/editorial/${editorialId}`);
+    return res as EditorialDetail;
+  }
+
   async editorialVote(editorialId: string, dto: EditorialVoteRequestDto) {
     const res = await this.post(`/editorial/${editorialId}/vote`, {
       action: dto.action,

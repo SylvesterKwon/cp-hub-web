@@ -6,15 +6,7 @@ import {
   CommentContextType,
   ReferenceSourceType,
 } from "@/clients/cpHub/type";
-import {
-  Card,
-  CardHeader,
-  Link,
-  List,
-  ListItem,
-  Skeleton,
-  Typography,
-} from "@mui/material";
+import { Card, Link, Skeleton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 export default function CitedBySecion(props: { editorialId: string }) {
