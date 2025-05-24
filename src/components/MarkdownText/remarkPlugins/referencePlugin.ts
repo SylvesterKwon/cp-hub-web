@@ -4,7 +4,7 @@ import { Root } from "mdast";
 
 export const referenceEditorialCaptureRule = {
   type: "editorial",
-  regex: /(?<=^|\s)e#([A-Za-z0-9_]+)/g,
+  regex: /(?<=^|\s)e#([A-Za-z0-9_-]+)/g,
 };
 
 export const referenceEditorialPlugin: Plugin<[], Root> = () => {
@@ -36,7 +36,7 @@ export const referenceEditorialPlugin: Plugin<[], Root> = () => {
 
 export const referenceProblemCaptureRule = {
   type: "problem",
-  regex: /(?<=^|\s)p#([A-Za-z0-9_]+)/g,
+  regex: /(?<=^|\s)p#([A-Za-z0-9_-]+)/g,
 };
 
 export const referenceProblemPlugin: Plugin<[], Root> = () => {
@@ -69,7 +69,7 @@ export const referenceProblemPlugin: Plugin<[], Root> = () => {
 
 export const referenceContestCaptureRule = {
   type: "contest",
-  regex: /(?<=^|\s)c#([A-Za-z0-9_]+)/g,
+  regex: /(?<=^|\s)c#([A-Za-z0-9_-]+)/g,
 };
 
 export const referenceContestPlugin: Plugin<[], Root> = () => {
