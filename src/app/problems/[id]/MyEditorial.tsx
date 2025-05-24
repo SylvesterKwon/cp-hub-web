@@ -15,6 +15,7 @@ import {
   Tooltip,
   Typography,
   Link as MUILink,
+  IconButton,
 } from "@mui/material";
 import { useMyEditorialStore } from "./stores/myEditorialStore";
 import { useEffect, useState } from "react";
@@ -25,8 +26,8 @@ import {
   ArrowUpward,
   CommentOutlined,
   DeleteOutline,
-  EditNoteOutlined,
   EditOutlined,
+  FormatQuote,
   PostAdd,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
@@ -36,8 +37,8 @@ import { CommentContextType, EditorialDetail } from "@/clients/cpHub/type";
 import { useCommentStore } from "@/app/stores/commentStore";
 import { useUserStore } from "@/app/stores/userStore";
 import { useEditorialStore } from "./stores/editorialStore";
-import ButtonLink from "@/components/ButtonLink";
 import Link from "next/link";
+import CitedBySecion from "./CitedBySection";
 
 export default function MyEditorial(props: { problemId: string }) {
   const { problemId } = props;
@@ -173,7 +174,9 @@ export default function MyEditorial(props: { problemId: string }) {
 function MyExistingEditorial(props: { editorial: EditorialDetail }) {
   const { editorial } = props;
 
-  const [commentSectionOpen, setCommentSectionOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"folded" | "comment" | "citedBy">(
+    "folded"
+  );
   const commentTotalCount = useCommentStore((state) => state.totalCount);
 
   return (
@@ -210,13 +213,28 @@ function MyExistingEditorial(props: { editorial: EditorialDetail }) {
             color="info"
             startIcon={<CommentOutlined />}
             onClick={() => {
-              setCommentSectionOpen((prev) => !prev);
+              setViewMode((prev) =>
+                prev === "comment" ? "folded" : "comment"
+              );
             }}
           >
             {commentTotalCount !== undefined
               ? commentTotalCount
               : editorial.commentCount}
           </Button>
+          <Tooltip title="View cited by" placement="top">
+            <IconButton
+              size="small"
+              color="info"
+              onClick={() => {
+                setViewMode((prev) =>
+                  prev === "citedBy" ? "folded" : "citedBy"
+                );
+              }}
+            >
+              <FormatQuote />
+            </IconButton>
+          </Tooltip>
         </Stack>
         <Typography variant="body2" color="text.secondary">
           {`${dayjs(editorial.createdAt).toString()}`}
@@ -233,7 +251,8 @@ function MyExistingEditorial(props: { editorial: EditorialDetail }) {
           )}
         </Typography>
       </Stack>
-      {commentSectionOpen && <EditorialCommentSection />}
+      {viewMode === "comment" && <EditorialCommentSection />}
+      {viewMode === "citedBy" && <CitedBySecion editorialId={editorial.id} />}
     </Stack>
   );
 }

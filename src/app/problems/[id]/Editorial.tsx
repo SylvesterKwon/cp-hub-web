@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Card,
+  IconButton,
   Stack,
   Tooltip,
   Typography,
@@ -13,6 +14,7 @@ import {
   ArrowDownward,
   ArrowUpward,
   CommentOutlined,
+  FormatQuote,
 } from "@mui/icons-material";
 import dayjs from "dayjs";
 import MarkdownText from "@/components/MarkdownText/remarkPlugins/MarkdownText";
@@ -21,12 +23,16 @@ import { useState } from "react";
 import EditorialCommentSection from "./EditorialCommentSection";
 import { useCommentStore } from "@/app/stores/commentStore";
 import { useUserStore } from "@/app/stores/userStore";
+import CitedBySecion from "./CitedBySection";
 
 export default function Editorial(props: { editorial: EditorialDetail }) {
   const { editorial } = props;
 
   const vote = useEditorialStore((state) => state.vote);
-  const [commentSectionOpen, setCommentSectionOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"folded" | "comment" | "citedBy">(
+    "folded"
+  );
+
   const commentTotalCount = useCommentStore((state) => state.totalCount);
 
   return (
@@ -88,19 +94,36 @@ export default function Editorial(props: { editorial: EditorialDetail }) {
                 </Button>
               )}
             </ButtonGroup>
-            <Button
-              variant="text"
-              size="small"
-              color="info"
-              startIcon={<CommentOutlined />}
-              onClick={() => {
-                setCommentSectionOpen((prev) => !prev);
-              }}
-            >
-              {commentTotalCount !== undefined
-                ? commentTotalCount
-                : editorial.commentCount}
-            </Button>
+            <div>
+              <Button
+                variant="text"
+                size="small"
+                color="info"
+                startIcon={<CommentOutlined />}
+                onClick={() => {
+                  setViewMode((prev) =>
+                    prev === "comment" ? "folded" : "comment"
+                  );
+                }}
+              >
+                {commentTotalCount !== undefined
+                  ? commentTotalCount
+                  : editorial.commentCount}
+              </Button>
+              <Tooltip title="View cited by" placement="top">
+                <IconButton
+                  size="small"
+                  color="info"
+                  onClick={() => {
+                    setViewMode((prev) =>
+                      prev === "citedBy" ? "folded" : "citedBy"
+                    );
+                  }}
+                >
+                  <FormatQuote />
+                </IconButton>
+              </Tooltip>
+            </div>
           </Stack>
           <Typography variant="body2" color="text.secondary">
             {`${dayjs(editorial.createdAt).toString()}`}
@@ -119,7 +142,8 @@ export default function Editorial(props: { editorial: EditorialDetail }) {
             )}
           </Typography>
         </Stack>
-        {commentSectionOpen && <EditorialCommentSection />}
+        {viewMode === "comment" && <EditorialCommentSection />}
+        {viewMode === "citedBy" && <CitedBySecion editorialId={editorial.id} />}
       </Stack>
     </Card>
   );

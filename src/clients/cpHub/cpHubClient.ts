@@ -27,6 +27,7 @@ import {
   SignUpRequestDto,
   GetReferenceInfoBulkRequestDto,
   GetReferenceInfoBulkResponse,
+  GetEditorialCitationsResponse,
 } from "./type";
 
 class CpHubClient extends CpHubBaseClient {
@@ -87,6 +88,11 @@ class CpHubClient extends CpHubBaseClient {
       action: dto.action,
     });
     return res as EditorialVoteResponse;
+  }
+
+  async getEditorialCitations(editorialId: string) {
+    const res = await this.get(`/editorial/${editorialId}/citations`);
+    return res as GetEditorialCitationsResponse;
   }
 
   // CONTEST API

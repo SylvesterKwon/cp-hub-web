@@ -173,6 +173,66 @@ export type EditorialVoteResponse = {
   };
 };
 
+export enum ReferenceSourceType {
+  COMMENT = "comment",
+  EDITORIAL = "editorial",
+}
+
+export type BaseCitationInformation = {
+  sourceType: ReferenceSourceType;
+  createdAt: string;
+  source: {
+    id: string;
+    author: {
+      id: string;
+      username: string;
+      profilePictureUrl?: string;
+    };
+  };
+};
+
+export type CommentCitationInformation = {
+  sourceType: ReferenceSourceType.COMMENT;
+  source: {
+    context?:
+      | {
+          type: CommentContextType.PROBLEM | CommentContextType.CONTEST;
+          id: string;
+          name: string;
+        }
+      | {
+          type: CommentContextType.EDITORIAL;
+          author: {
+            id: string;
+            username: string;
+            profilePictureUrl?: string;
+          };
+          problem: {
+            id: string;
+            name: string;
+          };
+        };
+  };
+};
+
+export type EditorialCitationInformation = {
+  sourceType: ReferenceSourceType.EDITORIAL;
+  source: {
+    problem: {
+      id: string;
+      name: string;
+    };
+  };
+};
+
+export type CitationInformation = BaseCitationInformation &
+  (CommentCitationInformation | EditorialCitationInformation);
+
+export type GetEditorialCitationsResponse = {
+  totalCount: number;
+  results: CitationInformation[];
+};
+
 // COMMENT API
 export enum CommentContextType {
   PROBLEM = "problem",
