@@ -28,10 +28,16 @@ import {
   GetReferenceInfoBulkRequestDto,
   GetReferenceInfoBulkResponse,
   GetEditorialCitationsResponse,
+  GetUserDetailResponse,
 } from "./type";
 
 class CpHubClient extends CpHubBaseClient {
   // USER API
+  async getUserDetail(username: string) {
+    const res = await this.get(`/user/${username}/detail`);
+    return res as GetUserDetailResponse;
+  }
+
   async signIn(dto: SignInRequestDto) {
     // TODO: status code 등 접근할 수 있도록 baseclient 수정 필요. 지금은 body만 접근 가능
     const res = await this.post("/user/sign-in", dto);
