@@ -35,6 +35,27 @@ export enum DetailedContestType {
   // ...
 }
 
+export type GetUserDetailResponse = {
+  createdAt: string;
+  id: string;
+  username: string;
+  profilePictureUrl?: string;
+  externalPlatformIds: {
+    codeforces?: string;
+    atCoder?: string;
+    baekjoonOnlineJudge?: string;
+    gitHub?: string;
+  };
+  biography?: string;
+  metrics: {
+    hIndex: number;
+    gIndex: number;
+    authoredCommentCount: number;
+    authoredEditorialCount: number;
+    editorialVoteCount: number;
+  };
+};
+
 export type SignInRequestDto = {
   email: string;
   password: string;
