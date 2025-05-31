@@ -4,7 +4,7 @@ import { CpHubError } from "./CpHubError";
 export type Query = Record<string, string | number | string[] | number[]>;
 
 export class CpHubBaseClient {
-  private baseUrl = "http://localhost:3000"; // TODO: Move to env
+  private baseUrl = process.env.NEXT_PUBLIC_CP_HUB_SERVER_HOST;
 
   private getFullUrl(path: string, query?: Query) {
     let res = `${this.baseUrl}${path}`;
