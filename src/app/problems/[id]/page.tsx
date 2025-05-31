@@ -19,10 +19,9 @@ import ProblemRating from "./ProblemRating";
 import EditorialList from "./EditorialList";
 import EditorialListStoreProvider from "./EditorialListStoreProvider";
 import MyEditorial from "./MyEditorial";
+import { PageProps } from "../../../../.next/types/app/page";
 
-export default async function ProblemDetailPage(props: {
-  params: { id: string };
-}) {
+export default async function ProblemDetailPage(props: PageProps) {
   const params = await props.params;
   const problemId = params.id;
   const problem = await cpHubClient.getProblemDetail(problemId); // TODO: contest 없을때 처리 추가

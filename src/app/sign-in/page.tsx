@@ -18,8 +18,17 @@ import { SignInForm } from "../types/user";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { useUserStore } from "../stores/userStore";
 import { CpHubError, CpHubErrorCode } from "@/clients/cpHub/CpHubError";
+import { Suspense } from "react";
 
 export default function SignInPage() {
+  return (
+    <Suspense>
+      <SignInPageContent />
+    </Suspense>
+  );
+}
+
+function SignInPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 

@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEditorialStore } from "./stores/editorialStore";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import Editorial from "./Editorial";
 import { FormContainer, SelectElement, useForm } from "react-hook-form-mui";
 import { CommentContextType, EditorialListSortBy } from "@/clients/cpHub/type";
@@ -22,6 +22,14 @@ type EditorialListFilterForm = {
 };
 
 export default function EditorialList() {
+  return (
+    <Suspense>
+      <EditorialListContent />
+    </Suspense>
+  );
+}
+
+function EditorialListContent() {
   const editorialList = useEditorialStore((state) => state.editorialList);
   const editorialLoading = useEditorialStore((state) => state.isLoading);
   const setFilter = useEditorialStore((state) => state.setFilter);

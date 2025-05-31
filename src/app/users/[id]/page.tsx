@@ -15,8 +15,9 @@ import Grid from "@mui/material/Grid2";
 import dayjs from "dayjs";
 import UserMetricSection from "./UserMetricSection";
 import UserExternalLinkSection from "./UserExternalLinkSection";
+import { PageProps } from "../../../../.next/types/app/page";
 
-export default async function UserPage(props: { params: { id: string } }) {
+export default async function UserPage(props: PageProps) {
   const params = await props.params;
   const username = params.id;
   let userDetail: GetUserDetailResponse | null = null;

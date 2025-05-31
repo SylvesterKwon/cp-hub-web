@@ -29,10 +29,11 @@ function durationSecondsToString(durationSeconds: number) {
 }
 
 export default async function ContestsDetailPage(props: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const { params } = props;
-  const contestId = params.id;
+  const { id } = await params;
+  const contestId = id;
   const contest = await cpHubClient.getContestDetail(contestId); // TODO: contest 없을때 처리 추가
   const contestInfo: { label: string; value: ReactNode }[] = [
     {

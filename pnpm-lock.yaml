@@ -102,6 +102,9 @@ importers:
       '@eslint/eslintrc':
         specifier: ^3.2.0
         version: 3.2.0
+      '@next/eslint-plugin-next':
+        specifier: ^15.3.3
+        version: 15.3.3
       '@types/js-cookie':
         specifier: ^3.0.6
         version: 3.0.6
@@ -602,6 +605,9 @@ packages:
 
   '@next/eslint-plugin-next@15.1.5':
     resolution: {integrity: sha512-3cCrXBybsqe94UxD6DBQCYCCiP9YohBMgZ5IzzPYHmPzj8oqNlhBii5b6o1HDDaRHdz2pVnSsAROCtrczy8O0g==}
+
+  '@next/eslint-plugin-next@15.3.3':
+    resolution: {integrity: sha512-VKZJEiEdpKkfBmcokGjHu0vGDG+8CehGs90tBEy/IDoDDKGngeyIStt2MmE5FYNyU9BhgR7tybNWTAJY/30u+Q==}
 
   '@next/swc-darwin-arm64@15.1.5':
     resolution: {integrity: sha512-5ttHGE75Nw9/l5S8zR2xEwR8OHEqcpPym3idIMAZ2yo+Edk0W/Vf46jGqPOZDk+m/SJ+vYZDSuztzhVha8rcdA==}
@@ -2972,6 +2978,10 @@ snapshots:
   '@next/env@15.1.5': {}
 
   '@next/eslint-plugin-next@15.1.5':
+    dependencies:
+      fast-glob: 3.3.1
+
+  '@next/eslint-plugin-next@15.3.3':
     dependencies:
       fast-glob: 3.3.1
 
