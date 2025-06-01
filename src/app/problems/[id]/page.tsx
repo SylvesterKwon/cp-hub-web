@@ -32,9 +32,9 @@ export default async function ProblemDetailPage(props: PageProps) {
         <div>
           {problem.availableOnlineJudges.map((judge) => (
             <div key={judge.url}>
-              <a href={judge.url} target="_blank" rel="noreferrer">
+              <MUILink href={judge.url} target="_blank" rel="noreferrer">
                 {judge.url}
-              </a>
+              </MUILink>
             </div>
           ))}
         </div>
@@ -46,7 +46,11 @@ export default async function ProblemDetailPage(props: PageProps) {
         <div>
           {problem.containingContests.map((contest) => (
             <div key={contest.id}>
-              <Link href={`/contests/${contest.id}`} passHref>
+              <Link
+                href={`/contests/${contest.id}`}
+                passHref
+                style={{ color: "inherit", textDecoration: "inherit" }}
+              >
                 <MUILink>{contest.name}</MUILink>
               </Link>
             </div>

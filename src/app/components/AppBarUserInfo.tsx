@@ -3,6 +3,7 @@ import ButtonLink from "@/components/ButtonLink";
 import SignInButton from "./SignInButton";
 import { useUserStore } from "../stores/userStore";
 import { Avatar, Stack } from "@mui/material";
+import Link from "next/link";
 
 type AppBarUserInfoProps = {
   initialUserInfo?: {
@@ -22,7 +23,12 @@ export default function AppBarUserInfo(props: AppBarUserInfoProps) {
         alt={userInfo.username}
         src={clientUserInfo?.profilePictureUrl}
       />
-      <div>{userInfo.username}</div>
+      <Link
+        href={`/users/${userInfo.username}`}
+        style={{ color: "inherit", textDecoration: "inherit" }}
+      >
+        <div>{userInfo.username}</div>
+      </Link>
     </Stack>
   ) : (
     <>

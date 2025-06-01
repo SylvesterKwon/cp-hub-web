@@ -28,6 +28,7 @@ import { EditCommentForm } from "./types/comment";
 import { Delete, Edit, Reply } from "@mui/icons-material";
 import { useUserStore } from "@/app/stores/userStore";
 import EditorialCommentAddForm from "./EditorialCommentAddForm";
+import Link from "next/link";
 
 export default function EditorialCommentList(props: { comments: Comment[] }) {
   const { comments } = props;
@@ -71,9 +72,14 @@ function EditorialComment(props: { comment: Comment }) {
       <Stack direction="column" sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" spacing={1} alignItems="center">
-            <Typography sx={{ fontWeight: "medium" }}>
-              {comment.author?.username}
-            </Typography>
+            <Link
+              href={`/users/${comment.author?.username}`}
+              style={{ color: "inherit", textDecoration: "inherit" }}
+            >
+              <Typography sx={{ fontWeight: "medium" }}>
+                {comment.author?.username}
+              </Typography>
+            </Link>
             <Typography variant="caption" color="text.secondary">
               {dayjs(comment.createdAt).toString()}
               {comment.createdAt !== comment.updatedAt && (
