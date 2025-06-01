@@ -42,7 +42,8 @@ export class CpHubBaseClient {
       credentials: "include",
       headers: this.getHeader(),
     });
-    const resBody = await res?.json();
+    const text = await res.text();
+    const resBody = text ? JSON.parse(text) : null;
     if (!res.ok) throw new CpHubError(resBody);
     return resBody;
   }
@@ -54,7 +55,8 @@ export class CpHubBaseClient {
       body: reqBody ? JSON.stringify(reqBody) : undefined,
       headers: this.getHeader(),
     });
-    const resBody = await res?.json();
+    const text = await res.text();
+    const resBody = text ? JSON.parse(text) : null;
     if (!res.ok) throw new CpHubError(resBody);
     return resBody;
   }
