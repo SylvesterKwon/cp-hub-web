@@ -62,7 +62,6 @@ export default function ProblemTable() {
     manualPagination: true,
     onPaginationChange: setPaginationState,
     state: {
-      // pagination: paginationState,
       pagination: {
         pageIndex: filter.page - 1,
         pageSize: filter.pageSize,

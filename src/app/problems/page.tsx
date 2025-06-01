@@ -2,6 +2,12 @@ import { Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ProblemFilter from "./ProblemFilter";
 import ProblemTable from "./ProblemTable";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Problems - CP hub",
+  description: "Problems - CP hub",
+};
 
 export default function ProblemsPage() {
   return (

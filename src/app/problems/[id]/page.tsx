@@ -21,6 +21,16 @@ import EditorialListStoreProvider from "./EditorialListStoreProvider";
 import MyEditorial from "./MyEditorial";
 import { PageProps } from "../../../../.next/types/app/page";
 
+export async function generateMetadata(props: PageProps) {
+  const params = await props.params;
+  const problemId = params.id;
+  const problem = await cpHubClient.getProblemDetail(problemId); // duplicate API call, using next cache internally
+
+  return {
+    title: `Problem | ${problem.name} - CP hub`,
+  };
+}
+
 export default async function ProblemDetailPage(props: PageProps) {
   const params = await props.params;
   const problemId = params.id;
@@ -32,9 +42,9 @@ export default async function ProblemDetailPage(props: PageProps) {
         <div>
           {problem.availableOnlineJudges.map((judge) => (
             <div key={judge.url}>
-              <a href={judge.url} target="_blank" rel="noreferrer">
+              <MUILink href={judge.url} target="_blank" rel="noreferrer">
                 {judge.url}
-              </a>
+              </MUILink>
             </div>
           ))}
         </div>
@@ -46,7 +56,11 @@ export default async function ProblemDetailPage(props: PageProps) {
         <div>
           {problem.containingContests.map((contest) => (
             <div key={contest.id}>
-              <Link href={`/contests/${contest.id}`} passHref>
+              <Link
+                href={`/contests/${contest.id}`}
+                passHref
+                style={{ color: "inherit", textDecoration: "inherit" }}
+              >
                 <MUILink>{contest.name}</MUILink>
               </Link>
             </div>

@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import GlobalStoreWrapper from "./components/GlobalStoreWrapper";
+import GlobalProviders from "./components/GlobalProviders";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -49,17 +50,19 @@ export default function RootLayout({
           <AppRouterCacheProvider>
             <ThemeProvider>
               <GlobalStoreWrapper />
-              <Stack>
-                <AppBar />
-                <Box
-                  sx={{
-                    padding: 2,
-                  }}
-                >
-                  {children}
-                </Box>
-                <Footer />
-              </Stack>
+              <GlobalProviders>
+                <Stack>
+                  <AppBar />
+                  <Box
+                    sx={{
+                      padding: 2,
+                    }}
+                  >
+                    {children}
+                  </Box>
+                  <Footer />
+                </Stack>
+              </GlobalProviders>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </NextThemeProvider>

@@ -54,7 +54,14 @@ export default function AppBar({}) {
               sx={{ display: { xs: "none", md: "block" } }}
               href="/forum"
             >
-              Forum
+              Forum (WIP)
+            </ButtonLink>
+            <ButtonLink
+              color="inherit"
+              sx={{ display: { xs: "none", md: "block" } }}
+              href="/wiki"
+            >
+              WIKI (WIP)
             </ButtonLink>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">

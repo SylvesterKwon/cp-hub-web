@@ -11,6 +11,7 @@ import { useCommentStore } from "@/app/stores/commentStore";
 import { CpHubError, CpHubErrorCode } from "@/clients/cpHub/CpHubError";
 import { setFormError } from "@/utils/setFormError";
 import { useEffect } from "react";
+import { useSnackbar } from "notistack";
 
 export default function EditorialCommentAddForm(props: {
   setOpen?: (open: boolean) => void;
@@ -25,6 +26,7 @@ export default function EditorialCommentAddForm(props: {
   }, [formContext, parentCommentId]);
 
   const { dirtyFields } = useFormState({ control: formContext.control });
+  const { enqueueSnackbar } = useSnackbar();
 
   const addComment = useCommentStore((state) => state.addComment);
 
@@ -33,6 +35,14 @@ export default function EditorialCommentAddForm(props: {
       await addComment(data);
       formContext.reset();
       setOpen?.(false);
+      enqueueSnackbar("Comment added successfully", {
+        variant: "success",
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
+      });
     } catch (e) {
       if (
         e instanceof CpHubError &&

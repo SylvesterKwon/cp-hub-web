@@ -71,7 +71,6 @@ export const createEditorialStore = (problemId: string) => {
             myVote: res.data.myVote,
           };
         }
-        // TODO: add complete snackbar
         return editorial;
       });
       set({ editorialList });
