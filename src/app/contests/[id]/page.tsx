@@ -18,15 +18,7 @@ import {
 import Grid from "@mui/material/Grid2";
 import Link from "next/link";
 import { ReactNode } from "react";
-
-function durationSecondsToString(durationSeconds: number) {
-  const hours = Math.floor(durationSeconds / 3600);
-  const minutes = String(Math.floor((durationSeconds % 3600) / 60)).padStart(
-    2,
-    "0"
-  );
-  return `${hours}:${minutes}`;
-}
+import { durationSecondsToString } from "../contestUtils";
 
 export default async function ContestsDetailPage(props: {
   params: Promise<{ id: string }>;
