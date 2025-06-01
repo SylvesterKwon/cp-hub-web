@@ -21,6 +21,16 @@ import EditorialListStoreProvider from "./EditorialListStoreProvider";
 import MyEditorial from "./MyEditorial";
 import { PageProps } from "../../../../.next/types/app/page";
 
+export async function generateMetadata(props: PageProps) {
+  const params = await props.params;
+  const problemId = params.id;
+  const problem = await cpHubClient.getProblemDetail(problemId); // duplicate API call, using next cache internally
+
+  return {
+    title: `Problem | ${problem.name} - CP hub`,
+  };
+}
+
 export default async function ProblemDetailPage(props: PageProps) {
   const params = await props.params;
   const problemId = params.id;
