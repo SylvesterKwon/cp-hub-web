@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import SignUpPageContent from "./SignUpPageContent";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Sign Up - CP hub",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function SignUpPage() {
-  return <SignUpPageContent />;
+  return (
+    <Suspense>
+      <SignUpPageContent />
+    </Suspense>
+  );
 }
