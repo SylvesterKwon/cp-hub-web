@@ -75,10 +75,10 @@ export default function SignUpPage() {
                 />
               </Stack>
               <Button type="submit" fullWidth variant="contained">
-                Sign in
+                Sign up
               </Button>
               <Typography variant="body2">
-                Already have an account? <Link href="/sign-in">Sign Up</Link>
+                Already have an account? <Link href="/sign-in">Sign in</Link>
               </Typography>
             </Stack>
           </FormContainer>
