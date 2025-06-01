@@ -1,12 +1,17 @@
 import { create } from "zustand";
 import cpHubClient from "@/clients/cpHub/cpHubClient";
 
-export type ProblemFilter = {
+type Pagination = {
   page: number;
   pageSize: number;
+};
+
+export type ProblemSearchOptions = {
   keyword?: string;
   contestTypes?: string[];
 };
+
+export type ProblemFilter = ProblemSearchOptions & Pagination;
 
 const initialFilter: ProblemFilter = {
   page: 1,
@@ -27,24 +32,30 @@ export type ProblemListStore = {
   totalCount: number;
   problemList: ProblemEntry[];
   filter: ProblemFilter;
-  setFilter: (filter: ProblemFilter) => Promise<void>;
+  setSearchOption: (filter: ProblemSearchOptions) => Promise<void>;
   setPagination: (pagination: { page: number; pageSize: number }) => void;
 };
 
-export const useProblemListStore = create<ProblemListStore>((set) => ({
+export const useProblemListStore = create<ProblemListStore>((set, get) => ({
   totalCount: 0,
   problemList: [],
   filter: initialFilter,
-  setFilter: async (newFilter) => {
-    set({ filter: newFilter });
-    const res = await cpHubClient.getProblemList(newFilter);
+  setSearchOption: async (newProblemSearchOptions) => {
+    set({
+      filter: {
+        ...initialFilter,
+        ...newProblemSearchOptions,
+      },
+    });
+    const res = await cpHubClient.getProblemList(get().filter);
     set({
       problemList: res.results,
       totalCount: res.totalCount,
     });
   },
   setPagination: async ({ page, pageSize }) => {
-    const newFilter = { ...initialFilter, page, pageSize };
+    const existingFilter = get().filter;
+    const newFilter = { ...existingFilter, page, pageSize };
     set({ filter: newFilter });
     const res = await cpHubClient.getProblemList(newFilter);
     set({

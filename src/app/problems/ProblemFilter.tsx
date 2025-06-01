@@ -18,19 +18,18 @@ export type ProblemFilterForm = {
 };
 
 export default function ProblemFilter() {
-  const { filter, setFilter } = useProblemListStore();
+  const { filter, setSearchOption } = useProblemListStore();
   const formContext = useForm<ProblemFilterForm>();
 
   async function handleSubmit(data: ProblemFilterForm) {
-    setFilter({
-      ...filter,
+    setSearchOption({
       keyword: data.keyword?.length ? data.keyword : undefined,
       contestTypes: data.contestTypes.length ? data.contestTypes : undefined,
     });
   }
 
   return (
-    <Paper>
+    <Paper variant="outlined">
       <Stack spacing={2} padding={2}>
         <Typography variant="h6">Filter</Typography>
         <FormContainer<ProblemFilterForm>

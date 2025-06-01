@@ -41,10 +41,13 @@ const initialPagenationState: MRT_PaginationState = {
 };
 
 export default function ProblemTable() {
-  const { totalCount, problemList, setPagination } = useProblemListStore();
-  const [paginationState, setPaginationState] = useState<MRT_PaginationState>(
-    initialPagenationState
-  );
+  const { totalCount, problemList, setPagination, filter } =
+    useProblemListStore();
+  const [paginationState, setPaginationState] = useState<MRT_PaginationState>({
+    pageIndex: filter.page - 1,
+    pageSize: filter.pageSize,
+  });
+
   useEffect(() => {
     setPagination({
       page: paginationState.pageIndex + 1,
@@ -59,7 +62,11 @@ export default function ProblemTable() {
     manualPagination: true,
     onPaginationChange: setPaginationState,
     state: {
-      pagination: paginationState,
+      // pagination: paginationState,
+      pagination: {
+        pageIndex: filter.page - 1,
+        pageSize: filter.pageSize,
+      },
     },
     initialState: { pagination: initialPagenationState },
     enableSorting: false,
