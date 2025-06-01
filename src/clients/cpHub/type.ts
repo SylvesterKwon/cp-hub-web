@@ -114,6 +114,28 @@ export type GetProblemListResponse = {
   totalCount: number;
 };
 
+export type GetContestListQuery = {
+  page: number;
+  pageSize: number;
+  keyword?: string;
+  types?: string[];
+};
+
+export type ContestEntry = {
+  id: string;
+  name: string;
+  type: ContestType;
+  detailedType?: DetailedContestType;
+  platformContestId: string;
+  startedAt?: string;
+  durationSeconds?: number;
+};
+
+export type GetContestListResponse = {
+  results: ContestEntry[];
+  totalCount: number;
+};
+
 export type GetContestDetailResponse = {
   id: string;
   name: string;

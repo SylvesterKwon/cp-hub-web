@@ -14,7 +14,6 @@ export default function UserExternalLinkSection(props: {
 }) {
   const { userDetail } = props;
   const { externalPlatformIds } = userDetail;
-  console.log("External Platform IDs:", externalPlatformIds);
 
   return (
     <Card variant="outlined">

@@ -35,11 +35,6 @@ const columns: MRT_ColumnDef<ProblemEntry>[] = [
   // TODO: Add count of registered solution
 ];
 
-const initialPagenationState: MRT_PaginationState = {
-  pageSize: 20,
-  pageIndex: 0,
-};
-
 export default function ProblemTable() {
   const { totalCount, problemList, setPagination, filter } =
     useProblemListStore();
@@ -55,6 +50,13 @@ export default function ProblemTable() {
     });
   }, [paginationState, setPagination]);
 
+  useEffect(() => {
+    setPaginationState({
+      pageIndex: filter.page - 1,
+      pageSize: filter.pageSize,
+    });
+  }, [filter.page, filter.pageSize]);
+
   const table = useMaterialReactTable<ProblemEntry>({
     columns,
     data: problemList,
@@ -62,12 +64,8 @@ export default function ProblemTable() {
     manualPagination: true,
     onPaginationChange: setPaginationState,
     state: {
-      pagination: {
-        pageIndex: filter.page - 1,
-        pageSize: filter.pageSize,
-      },
+      pagination: paginationState,
     },
-    initialState: { pagination: initialPagenationState },
     enableSorting: false,
     enableTopToolbar: false,
     enableColumnActions: false,
