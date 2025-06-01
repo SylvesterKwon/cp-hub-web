@@ -29,6 +29,8 @@ import {
   GetReferenceInfoBulkResponse,
   GetEditorialCitationsResponse,
   GetUserDetailResponse,
+  GetContestListQuery,
+  GetContestListResponse,
 } from "./type";
 
 class CpHubClient extends CpHubBaseClient {
@@ -107,6 +109,11 @@ class CpHubClient extends CpHubBaseClient {
   }
 
   // CONTEST API
+  async getContestList(dto: GetContestListQuery) {
+    const res = await this.get("/contest", dto);
+    return res as GetContestListResponse;
+  }
+
   async getContestDetail(contestId: string) {
     const res = await this.get(`/contest/${contestId}`);
     return res as GetContestDetailResponse;
