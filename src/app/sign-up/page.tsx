@@ -3,13 +3,15 @@ import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { FormContainer, TextFieldElement, useForm } from "react-hook-form-mui";
 import { SignUpForm } from "../types/user";
 import { useUserStore } from "../stores/userStore";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CpHubError, CpHubErrorCode } from "@/clients/cpHub/CpHubError";
 import { setFormError } from "@/utils/setFormError";
 
 export default function SignUpPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const formContext = useForm<SignUpForm>();
   const userInfo = useUserStore((state) => state.userInfo);
   const signUp = useUserStore((state) => state.signUp);
@@ -18,7 +20,8 @@ export default function SignUpPage() {
   async function handleSubmit(data: SignUpForm) {
     try {
       await signUp(data);
-      router.push("/");
+      const redirectPathname = searchParams.get("redirect") || "/";
+      router.push(redirectPathname);
     } catch (e) {
       if (
         e instanceof CpHubError &&
@@ -59,7 +62,7 @@ export default function SignUpPage() {
                 <TextFieldElement
                   name="password"
                   label="Password"
-                  autoComplete="password"
+                  autoComplete="new-password"
                   type="password"
                   helperText="Use 8 or more characters with a mix of lower/uppercase letters, numbers & symbols"
                   fullWidth
@@ -75,10 +78,10 @@ export default function SignUpPage() {
                 />
               </Stack>
               <Button type="submit" fullWidth variant="contained">
-                Sign in
+                Sign up
               </Button>
               <Typography variant="body2">
-                Already have an account? <Link href="/sign-in">Sign Up</Link>
+                Already have an account? <Link href="/sign-in">Sign in</Link>
               </Typography>
             </Stack>
           </FormContainer>
