@@ -8,6 +8,7 @@ import { useState } from "react";
 import MarkdownPreview from "@/app/components/MarkdownPreview";
 import { PostAdd } from "@mui/icons-material";
 import { useEditorialStore } from "./stores/editorialStore";
+import { useSnackbar } from "notistack";
 
 export default function EditorialEditor(props: {
   problemId: string;
@@ -26,8 +27,18 @@ export default function EditorialEditor(props: {
   });
   const [previewOpen, setPreviewOpen] = useState(false);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   async function handleSubmit(data: UpdateMyEditorialRequestDto) {
     await updateEditorial(problemId, data.content);
+    enqueueSnackbar("Editorial updated successfully", {
+      variant: "success",
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
     formContext.reset();
     setInteractionStatus("View");
     await refresh();

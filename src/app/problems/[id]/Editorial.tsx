@@ -26,6 +26,7 @@ import { useCommentStore } from "@/app/stores/commentStore";
 import { useUserStore } from "@/app/stores/userStore";
 import CitedBySecion from "./CitedBySection";
 import Link from "next/link";
+import { useSnackbar } from "notistack";
 
 export default function Editorial(props: { editorial: EditorialDetail }) {
   const { editorial } = props;
@@ -34,6 +35,18 @@ export default function Editorial(props: { editorial: EditorialDetail }) {
   const [viewMode, setViewMode] = useState<"folded" | "comment" | "citedBy">(
     "folded"
   );
+  const { enqueueSnackbar } = useSnackbar();
+
+  const enqueueVoteSnackbar = (message: string) => {
+    enqueueSnackbar(message, {
+      autoHideDuration: 2000,
+      variant: "success",
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+  };
 
   const commentTotalCount = useCommentStore((state) => state.totalCount);
 
@@ -64,7 +77,10 @@ export default function Editorial(props: { editorial: EditorialDetail }) {
                   variant="contained"
                   color="blue"
                   startIcon={<ArrowUpward />}
-                  onClick={() => vote(editorial.id, "undo")}
+                  onClick={async () => {
+                    await vote(editorial.id, "undo");
+                    enqueueVoteSnackbar("Successfully unvoted");
+                  }}
                 >
                   {editorial.upvoteCount}
                 </Button>
@@ -72,7 +88,10 @@ export default function Editorial(props: { editorial: EditorialDetail }) {
                 <Button
                   variant="outlined"
                   startIcon={<ArrowUpward />}
-                  onClick={() => vote(editorial.id, "upvote")}
+                  onClick={async () => {
+                    await vote(editorial.id, "upvote");
+                    enqueueVoteSnackbar("Successfully upvoted");
+                  }}
                 >
                   {editorial.upvoteCount}
                 </Button>
@@ -82,7 +101,10 @@ export default function Editorial(props: { editorial: EditorialDetail }) {
                   variant="contained"
                   color="red"
                   startIcon={<ArrowDownward />}
-                  onClick={() => vote(editorial.id, "undo")}
+                  onClick={async () => {
+                    await vote(editorial.id, "undo");
+                    enqueueVoteSnackbar("Successfully unvoted");
+                  }}
                 >
                   {editorial.downvoteCount}
                 </Button>
@@ -90,7 +112,10 @@ export default function Editorial(props: { editorial: EditorialDetail }) {
                 <Button
                   variant="outlined"
                   startIcon={<ArrowDownward />}
-                  onClick={() => vote(editorial.id, "downvote")}
+                  onClick={async () => {
+                    vote(editorial.id, "downvote");
+                    enqueueVoteSnackbar("Successfully downvoted");
+                  }}
                 >
                   {editorial.downvoteCount}
                 </Button>

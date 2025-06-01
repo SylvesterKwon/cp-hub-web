@@ -18,6 +18,7 @@ import { SignInForm } from "../types/user";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { useUserStore } from "../stores/userStore";
 import { CpHubError, CpHubErrorCode } from "@/clients/cpHub/CpHubError";
+import { useSnackbar } from "notistack";
 
 export default function SignInPageContent() {
   const router = useRouter();
@@ -27,11 +28,20 @@ export default function SignInPageContent() {
   const signIn = useUserStore((state) => state.signIn);
   if (userInfo) redirect("/");
   const formContext = useForm<SignInForm>();
+  const { enqueueSnackbar } = useSnackbar();
 
   async function handleSubmit(data: SignInForm) {
     try {
-      await signIn(data);
+      const signInRes = await signIn(data);
       const redirectPathname = searchParams.get("redirect") || "/";
+      enqueueSnackbar(`Welcome ${signInRes.username}.`, {
+        variant: "success",
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
+      });
       router.push(redirectPathname);
     } catch (e) {
       if (

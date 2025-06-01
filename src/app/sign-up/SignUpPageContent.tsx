@@ -7,6 +7,7 @@ import { redirect, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CpHubError, CpHubErrorCode } from "@/clients/cpHub/CpHubError";
 import { setFormError } from "@/utils/setFormError";
+import { useSnackbar } from "notistack";
 
 export default function SignUpPageContent() {
   const router = useRouter();
@@ -15,11 +16,30 @@ export default function SignUpPageContent() {
   const formContext = useForm<SignUpForm>();
   const userInfo = useUserStore((state) => state.userInfo);
   const signUp = useUserStore((state) => state.signUp);
+  const { enqueueSnackbar } = useSnackbar();
 
   if (userInfo) redirect("/");
   async function handleSubmit(data: SignUpForm) {
     try {
       await signUp(data);
+      enqueueSnackbar("Sign up successful 🎉.", {
+        variant: "success",
+        autoHideDuration: 3000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        action: (
+          <Link
+            href="/sign-in"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            <Button color="inherit" size="small">
+              Sign in
+            </Button>
+          </Link>
+        ),
+      });
       const redirectPathname = searchParams.get("redirect") || "/";
       router.push(redirectPathname);
     } catch (e) {
