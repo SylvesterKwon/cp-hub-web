@@ -39,6 +39,7 @@ import { useUserStore } from "@/app/stores/userStore";
 import { useEditorialStore } from "./stores/editorialStore";
 import Link from "next/link";
 import CitedBySecion from "./CitedBySection";
+import { useSnackbar } from "notistack";
 
 export default function MyEditorial(props: { problemId: string }) {
   const { problemId } = props;
@@ -49,6 +50,7 @@ export default function MyEditorial(props: { problemId: string }) {
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const refresh = useEditorialStore((state) => state.refresh);
   const userInfo = useUserStore((state) => state.userInfo);
+  const { enqueueSnackbar } = useSnackbar();
 
   const [interactionStatus, setInteractionStatus] = useState<"View" | "Edit">(
     "View"
@@ -62,6 +64,14 @@ export default function MyEditorial(props: { problemId: string }) {
 
   async function onDelete() {
     await deleteEditorial(problemId);
+    enqueueSnackbar("Editorial deleted successfully", {
+      variant: "success",
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
     setInteractionStatus("View");
     await refresh();
   }

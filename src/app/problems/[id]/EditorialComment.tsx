@@ -28,6 +28,8 @@ import { EditCommentForm } from "./types/comment";
 import { Delete, Edit, Reply } from "@mui/icons-material";
 import { useUserStore } from "@/app/stores/userStore";
 import EditorialCommentAddForm from "./EditorialCommentAddForm";
+import Link from "next/link";
+import { enqueueSnackbar, useSnackbar } from "notistack";
 
 export default function EditorialCommentList(props: { comments: Comment[] }) {
   const { comments } = props;
@@ -71,9 +73,14 @@ function EditorialComment(props: { comment: Comment }) {
       <Stack direction="column" sx={{ width: "100%" }}>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" spacing={1} alignItems="center">
-            <Typography sx={{ fontWeight: "medium" }}>
-              {comment.author?.username}
-            </Typography>
+            <Link
+              href={`/users/${comment.author?.username}`}
+              style={{ color: "inherit", textDecoration: "inherit" }}
+            >
+              <Typography sx={{ fontWeight: "medium" }}>
+                {comment.author?.username}
+              </Typography>
+            </Link>
             <Typography variant="caption" color="text.secondary">
               {dayjs(comment.createdAt).toString()}
               {comment.createdAt !== comment.updatedAt && (
@@ -169,8 +176,16 @@ function EditorialComment(props: { comment: Comment }) {
       <EditorialCommentDeleteConfirmationModal
         open={deleteConfirmationOpen}
         setOpen={setDeleteConfirmationOpen}
-        onOk={() => {
-          deleteComment(comment.id);
+        onOk={async () => {
+          await deleteComment(comment.id);
+          enqueueSnackbar("Comment deleted successfully", {
+            variant: "success",
+            autoHideDuration: 2000,
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "center",
+            },
+          });
         }}
       />
     </Stack>
@@ -214,6 +229,7 @@ function EditorialCommentEdit(props: {
 }) {
   const { comment, setInteractionStatus } = props;
   const editComment = useCommentStore((state) => state.editComment);
+  const { enqueueSnackbar } = useSnackbar();
 
   const formContext = useForm<EditCommentForm>({
     defaultValues: {
@@ -223,6 +239,15 @@ function EditorialCommentEdit(props: {
 
   async function handleEditFormSubmit(data: EditCommentForm) {
     await editComment(comment.id, data);
+    enqueueSnackbar("Comment edited successfully", {
+      variant: "success",
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+
     setInteractionStatus("View");
   }
 
@@ -265,6 +290,8 @@ function EditorialCommentDeleteConfirmationModal(props: {
   onOk: () => void;
 }) {
   const { open, setOpen, onOk } = props;
+  const { enqueueSnackbar } = useSnackbar();
+
   return (
     <Dialog open={open}>
       <DialogTitle>Deleting comment</DialogTitle>
