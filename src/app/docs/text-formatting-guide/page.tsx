@@ -92,9 +92,9 @@ Inspired by [GitHub Flavored Markdown (GFM)](https://github.github.com/gfm/)
 | Syntax | Usage | Example Input | Example Output |
 |---|---|---|---|
 |\`@<username>\`|Mention specific user|\`@SylvesterKwon\`| @SylvesterKwon |
-|\`p#<problem_id>\`|Reference specific problem|\`p#0jc_YzOEZlK\`| p#sample_problem |
-|\`c#<contest_id>\`|Reference specific contest|\`c#pJ7RylunRng\`| c#sample_contest |
-|\`e#<editorial_id>\`|Reference specific editorial|\`e#InbrYf5ckhO\`| e#sample_editorial |
+|\`p#<problem_id>\`|Reference specific problem|\`p#0jc_YzOEZlK\`| p#0jc_YzOEZlK |
+|\`c#<contest_id>\`|Reference specific contest|\`c#pJ7RylunRng\`| c#pJ7RylunRng |
+|\`e#<editorial_id>\`|Reference specific editorial|\`e#InbrYf5ckhO\`| e#InbrYf5ckhO |
               `}
             />
           </Card>
