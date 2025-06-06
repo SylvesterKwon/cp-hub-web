@@ -72,7 +72,7 @@ class CpHubClient extends CpHubBaseClient {
     return res as EditorialDetail;
   }
 
-  async getEditorialList(problemId: string, dto: GetEditorialListQuery) {
+  async getProblemEditorialList(problemId: string, dto: GetEditorialListQuery) {
     const res = await this.get(`/problem/${problemId}/editorial`, dto);
     return res as GetEditorialListResponse;
   }
@@ -91,6 +91,11 @@ class CpHubClient extends CpHubBaseClient {
   }
 
   // EDITORIAL API
+  async getEditorialList(dto: GetEditorialListQuery) {
+    const res = await this.get(`/editorial`, dto);
+    return res as GetEditorialListResponse;
+  }
+
   async getEditorial(editorialId: string) {
     const res = await this.get(`/editorial/${editorialId}`);
     return res as EditorialDetail;

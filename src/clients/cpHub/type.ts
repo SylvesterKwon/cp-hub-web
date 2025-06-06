@@ -94,11 +94,14 @@ export type GetMeResponse =
     }
   | undefined;
 
+export type ProblemListSortBy = "createdAtAsc" | "updatedAtDesc";
+
 export type GetProblemListQuery = {
   page: number;
   pageSize: number;
   keyword?: string;
   contestTypes?: string[];
+  sortBy?: ProblemListSortBy;
 };
 
 export type GetProblemListResponse = {
@@ -114,11 +117,14 @@ export type GetProblemListResponse = {
   totalCount: number;
 };
 
+export type ContestListSortBy = "createdAtAsc" | "updatedAtDesc";
+
 export type GetContestListQuery = {
   page: number;
   pageSize: number;
   keyword?: string;
   types?: string[];
+  sortBy?: ContestListSortBy;
 };
 
 export type ContestEntry = {
@@ -180,6 +186,10 @@ export type EditorialDetail = {
   upvoteCount: number;
   downvoteCount: number;
   myVote?: EditorialVoteType;
+  problem: {
+    id: string;
+    name?: string;
+  };
 };
 
 export type EditorialListSortBy =
