@@ -154,7 +154,7 @@ function UserReference(props: { id: string }) {
     );
 
   return (
-    <Link href={`/user/${id}`} passHref>
+    <Link href={`/users/${id}`} passHref>
       <Chip
         component="span"
         avatar={<Avatar alt={user?.username} src={user?.profilePictureUrl} />}
