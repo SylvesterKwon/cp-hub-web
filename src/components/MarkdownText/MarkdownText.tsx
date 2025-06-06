@@ -8,6 +8,7 @@ import remarkMath from "remark-math";
 import rehypePrism from "rehype-prism";
 import "katex/dist/katex.min.css";
 import "prismjs/themes/prism-tomorrow.css";
+import styles from "./MarkdownText.module.css";
 
 import "prismjs/components/prism-c";
 import "prismjs/components/prism-cpp";
@@ -20,7 +21,10 @@ import "prismjs/components/prism-rust";
 import "prismjs/components/prism-kotlin";
 import "prismjs/components/prism-dart";
 
-import { mentionUserCaptureRule, mentionUserPlugin } from "./mentionUserPlugin";
+import {
+  mentionUserCaptureRule,
+  mentionUserPlugin,
+} from "./remarkPlugins/mentionUserPlugin";
 import {
   referenceContestCaptureRule,
   referenceContestPlugin,
@@ -28,7 +32,7 @@ import {
   referenceEditorialPlugin,
   referenceProblemCaptureRule,
   referenceProblemPlugin,
-} from "./referencePlugin";
+} from "./remarkPlugins/referencePlugin";
 import Link from "next/link";
 import { Avatar, Chip, CircularProgress, Link as MUILink } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -73,7 +77,9 @@ export default function MarkdownText(props: {
 }) {
   return (
     <ReferenceStoreProvider>
-      <MarkdownText2 {...props} />
+      <div className={styles.markdownText}>
+        <MarkdownText2 {...props} />
+      </div>
     </ReferenceStoreProvider>
   );
 }

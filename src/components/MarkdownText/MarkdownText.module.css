@@ -1,0 +1,18 @@
+.markdownText table {
+    border-collapse: collapse;
+}
+
+.markdownText table th,
+.markdownText table td {
+    padding: 6px 13px;
+    border: 1px solid #cccccc;
+}
+
+.markdownText table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.markdownText table p {
+    line-height: 1.5;
+}

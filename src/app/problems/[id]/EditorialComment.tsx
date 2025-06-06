@@ -20,7 +20,7 @@ import { RoleType } from "@/clients/cpHub/type";
 import { useCommentStore } from "@/app/stores/commentStore";
 import { useState } from "react";
 import type { Comment } from "@/clients/cpHub/type";
-import MarkdownText from "@/components/MarkdownText/remarkPlugins/MarkdownText";
+import MarkdownText from "@/components/MarkdownText/MarkdownText";
 import styles from "./styles.module.css";
 import dayjs from "dayjs";
 import { FormContainer, TextFieldElement, useForm } from "react-hook-form-mui";
