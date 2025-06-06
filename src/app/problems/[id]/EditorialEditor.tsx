@@ -3,7 +3,7 @@
 import { FormContainer, TextFieldElement, useForm } from "react-hook-form-mui";
 import { useMyEditorialStore } from "./stores/myEditorialStore";
 import { UpdateMyEditorialRequestDto } from "./types/editorial";
-import { Button, Stack } from "@mui/material";
+import { Button, Link, Stack } from "@mui/material";
 import { useState } from "react";
 import MarkdownPreview from "@/app/components/MarkdownPreview";
 import { PostAdd } from "@mui/icons-material";
@@ -51,22 +51,36 @@ export default function EditorialEditor(props: {
     >
       <Stack direction="column" spacing={1}>
         <TextFieldElement name="content" fullWidth size="small" multiline />
-
-        <Stack direction="row" justifyContent="flex-end" spacing={1}>
-          <Button size="small" onClick={() => setPreviewOpen(true)}>
-            Preview
-          </Button>
-          <Button
-            startIcon={<PostAdd />}
-            type="submit"
-            size="small"
-            color="primary"
-            variant="contained"
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Link
+            href="/docs/text-formatting-guide"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Post
-          </Button>
+            Text formatting guide
+          </Link>
+
+          <Stack direction="row" justifyContent="flex-end" spacing={1}>
+            <Button size="small" onClick={() => setPreviewOpen(true)}>
+              Preview
+            </Button>
+            <Button
+              startIcon={<PostAdd />}
+              type="submit"
+              size="small"
+              color="primary"
+              variant="contained"
+            >
+              Post
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
+
       <MarkdownPreview
         content={formContext.getValues("content")}
         handleClose={() => setPreviewOpen(false)}
