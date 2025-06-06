@@ -42,7 +42,10 @@ export const createEditorialStore = (problemId: string) => {
     setFilter: async (newFilter) => {
       set({ isLoading: true });
       const problemId = get().problemId;
-      const res = await cpHubClient.getEditorialList(problemId, newFilter);
+      const res = await cpHubClient.getProblemEditorialList(
+        problemId,
+        newFilter
+      );
       set({
         isLoading: false,
         filter: newFilter,
@@ -53,7 +56,10 @@ export const createEditorialStore = (problemId: string) => {
     refresh: async () => {
       set({ isLoading: true });
       const problemId = get().problemId;
-      const res = await cpHubClient.getEditorialList(problemId, get().filter);
+      const res = await cpHubClient.getProblemEditorialList(
+        problemId,
+        get().filter
+      );
       set({
         isLoading: false,
         editorialList: res.results,
