@@ -1,6 +1,6 @@
 "use client";
 
-import MarkdownText from "@/components/MarkdownText/remarkPlugins/MarkdownText";
+import MarkdownText from "@/components/MarkdownText/MarkdownText";
 import {
   Button,
   Dialog,

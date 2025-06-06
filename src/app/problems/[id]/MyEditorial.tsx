@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { useMyEditorialStore } from "./stores/myEditorialStore";
 import { useEffect, useState } from "react";
-import MarkdownText from "@/components/MarkdownText/remarkPlugins/MarkdownText";
+import MarkdownText from "@/components/MarkdownText/MarkdownText";
 import EditorialEditor from "./EditorialEditor";
 import {
   ArrowDownward,

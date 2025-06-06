@@ -1,5 +1,5 @@
 import cpHubClient from "@/clients/cpHub/cpHubClient";
-import MarkdownText from "@/components/MarkdownText/remarkPlugins/MarkdownText";
+import MarkdownText from "@/components/MarkdownText/MarkdownText";
 import {
   Alert,
   Card,
@@ -43,6 +43,13 @@ export default async function Home() {
 allowing users to share editorials and opinions. Made by @SylvesterKwon .
 
 Integrated platforms: [Codeforces](https://codeforces.com/), [AtCoder](https://atcoder.jp/)
+                  `}
+            />
+            <Divider />
+            <MarkdownText
+              content={`
+## User guide
+- [Text formatting guide](/docs/text-formatting-guide)
                   `}
             />
           </Card>
